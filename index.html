@@ -323,8 +323,7 @@
 
       
         
-          
-            <h1 id="Mac-OS-X-Creating-a-login-hook"><a href="#Mac-OS-X-Creating-a-login-hook" class="headerlink" title="Mac OS X: Creating a login hook"></a>Mac OS X: Creating a login hook</h1><p>Did you know that you can have Mac OS X run a script whenever you log in to your computer? You can if you create a “login hook.” A login hook tells Mac OS X to execute a certain script when a user logs in. Unlike Startup Items that open when a user logs in, a login hook is a script that executes as root. This advanced article shows you how to set up a login hook.</p>
+          <h1 id="Mac-OS-X-Creating-a-login-hook"><a href="#Mac-OS-X-Creating-a-login-hook" class="headerlink" title="Mac OS X: Creating a login hook"></a>Mac OS X: Creating a login hook</h1><p>Did you know that you can have Mac OS X run a script whenever you log in to your computer? You can if you create a “login hook.” A login hook tells Mac OS X to execute a certain script when a user logs in. Unlike Startup Items that open when a user logs in, a login hook is a script that executes as root. This advanced article shows you how to set up a login hook.</p>
 <p>With a login hook:</p>
 <ul>
 <li>The script specified as a login hook must be executable.</li>
@@ -333,41 +332,14 @@
 <li>Other login actions wait until the hook has completely executed.</li>
 </ul>
 <p><em>Mac OS X 10.3, 10.4, or later</em></p>
-<p>Note that with Mac OS X 10.3.x and 10.4.2 or later, you can use the alternative method at the bottom of this document instead, if you wish. For Mac OS X 10.4 and 10.4.1, you should always use the following steps:</p>
-<ol>
-<li>Open Terminal (Applications/Utilities).</li>
-<li><p>In the Terminal window, type:</p>
-</li>
-<li><p>sudo defaults write com.apple.loginwindow LoginHook /path/to/script</p>
-</li>
-<li><p>(where /path/to/script is the full path to the script that you want to execute when a user logs in—it doesn’t have to be in the user’s Home directory).</p>
-</li>
-<li><p>This modifies the /var/root/Library/Preferences/com.apple.loginwindow file.</p>
-</li>
-<li><p>Type your password at the prompt, then press Return.<br><em>Mac OS X 10.2.x, 10.3.x, or 10.4.2 or later</em></p>
-</li>
-<li><p>Open the /etc/ttys file: In the Finder, choose <em>Go to Folder</em> from the <em>Go</em> menu, type /etc/, then click Go.</p>
-</li>
-<li>In the resulting window, open the ttys file in your preferred text editor (such as TextEdit).</li>
-<li><p>Look for a line that reads:</p>
-</li>
-<li><p>#console “/System/Library/CoreServices/loginwindow.app/Contents/MacOS/loginwindow” vt100 on secure window=/System/Library/CoreServices/WindowServer onoption=”/usr/libexec/getty std.9600”</p>
-</li>
-<li><p>Edit this line so that it reads as follows (there are no breaks in this line):</p>
-</li>
-<li><p>#console “/System/Library/CoreServices/loginwindow.app/Contents/MacOS/loginwindow -LoginHook /path/to/script” vt100 on secure window=/System/Library/CoreServices/WindowServer onoption=”/usr/libexec/getty std.9600”</p>
-</li>
-<li><p>(where /path/to/script is the full path to the script that you want to execute when a user logs in).</p>
-</li>
-<li><p>Save the file.</p>
-</li>
-</ol>
-<p>Be sure that the text editor you use to edit this file does not break the line above into more than one line. This method will also work in Mac OS X 10.3.</p>
-<p>发布日期： 2011-6-1</p>
-<p>仍然需要帮助？</p>
-<p><a href="https://support.apple.com/zh-cn/HT2420" target="_blank" rel="external">Mac OS X: Creating a login hook</a></p>
-
-          
+<p>Note that with Mac OS X 10.3.x and 10.4.2 or later, you can use the alternative method at the bottom of this document instead, if you wish. For Mac OS X 10.4 and 10.4.1, you should always use the following steps:<br>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/06/30/creating-a-login-hook/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
