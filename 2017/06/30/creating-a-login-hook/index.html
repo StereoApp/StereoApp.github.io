@@ -77,7 +77,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Linux,docker,xdebug," />
+  <meta name="keywords" content="macOS," />
 
 
 
@@ -93,17 +93,17 @@
 
 
 
-<meta name="description" content="在mac的terminal中运行1sudo ifconfig lo0 alias 10.254.254.254  https://forums.docker.com/t/ip-address-for-xdebug/10460/5">
-<meta name="keywords" content="Linux,docker,xdebug">
+<meta name="description" content="Mac OS X: Creating a login hookDid you know that you can have Mac OS X run a script whenever you log in to your computer? You can if you create a “login hook.” A login hook tells Mac OS X to execute a">
+<meta name="keywords" content="macOS">
 <meta property="og:type" content="article">
-<meta property="og:title" content="解决docker for mac使用xdebug无法连接主机的9000口">
-<meta property="og:url" content="https://stereoapp.github.io/2017/06/30/docker-cant-connet-xdebug/index.html">
+<meta property="og:title" content="macOS创建登陆运行脚本">
+<meta property="og:url" content="https://stereoapp.github.io/2017/06/30/creating-a-login-hook/index.html">
 <meta property="og:site_name" content="zxf.log">
-<meta property="og:description" content="在mac的terminal中运行1sudo ifconfig lo0 alias 10.254.254.254  https://forums.docker.com/t/ip-address-for-xdebug/10460/5">
-<meta property="og:updated_time" content="2017-06-30T10:18:32.000Z">
+<meta property="og:description" content="Mac OS X: Creating a login hookDid you know that you can have Mac OS X run a script whenever you log in to your computer? You can if you create a “login hook.” A login hook tells Mac OS X to execute a">
+<meta property="og:updated_time" content="2017-06-30T10:43:30.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="解决docker for mac使用xdebug无法连接主机的9000口">
-<meta name="twitter:description" content="在mac的terminal中运行1sudo ifconfig lo0 alias 10.254.254.254  https://forums.docker.com/t/ip-address-for-xdebug/10460/5">
+<meta name="twitter:title" content="macOS创建登陆运行脚本">
+<meta name="twitter:description" content="Mac OS X: Creating a login hookDid you know that you can have Mac OS X run a script whenever you log in to your computer? You can if you create a “login hook.” A login hook tells Mac OS X to execute a">
 
 
 
@@ -131,13 +131,13 @@
 
 
 
-  <link rel="canonical" href="https://stereoapp.github.io/2017/06/30/docker-cant-connet-xdebug/"/>
+  <link rel="canonical" href="https://stereoapp.github.io/2017/06/30/creating-a-login-hook/"/>
 
 
 
 
 
-  <title>解决docker for mac使用xdebug无法连接主机的9000口 | zxf.log</title>
+  <title>macOS创建登陆运行脚本 | zxf.log</title>
   
 
 
@@ -256,7 +256,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://stereoapp.github.io/2017/06/30/docker-cant-connet-xdebug/">
+    <link itemprop="mainEntityOfPage" href="https://stereoapp.github.io/2017/06/30/creating-a-login-hook/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="zxf">
@@ -273,7 +273,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">解决docker for mac使用xdebug无法连接主机的9000口</h1>
+          <h1 class="post-title" itemprop="name headline">macOS创建登陆运行脚本</h1>
         
 
         <div class="post-meta">
@@ -285,7 +285,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-30T18:12:37+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-30T18:41:24+08:00">
                 2017-06-30
               </time>
             
@@ -320,10 +320,48 @@
       
 
       
-        <h1 id="在mac的terminal中运行"><a href="#在mac的terminal中运行" class="headerlink" title="在mac的terminal中运行"></a>在mac的terminal中运行</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo ifconfig lo0 <span class="built_in">alias</span> 10.254.254.254</div></pre></td></tr></table></figure>
-<blockquote>
-<p><a href="https://forums.docker.com/t/ip-address-for-xdebug/10460/5" target="_blank" rel="external">https://forums.docker.com/t/ip-address-for-xdebug/10460/5</a></p>
-</blockquote>
+        <h1 id="Mac-OS-X-Creating-a-login-hook"><a href="#Mac-OS-X-Creating-a-login-hook" class="headerlink" title="Mac OS X: Creating a login hook"></a>Mac OS X: Creating a login hook</h1><p>Did you know that you can have Mac OS X run a script whenever you log in to your computer? You can if you create a “login hook.” A login hook tells Mac OS X to execute a certain script when a user logs in. Unlike Startup Items that open when a user logs in, a login hook is a script that executes as root. This advanced article shows you how to set up a login hook.</p>
+<p>With a login hook:</p>
+<ul>
+<li>The script specified as a login hook must be executable.</li>
+<li>The login hook will be run as root.</li>
+<li>In the login hook script, the variable $1 returns the short name of the user who is logging in.</li>
+<li>Other login actions wait until the hook has completely executed.</li>
+</ul>
+<p><em>Mac OS X 10.3, 10.4, or later</em></p>
+<p>Note that with Mac OS X 10.3.x and 10.4.2 or later, you can use the alternative method at the bottom of this document instead, if you wish. For Mac OS X 10.4 and 10.4.1, you should always use the following steps:</p>
+<ol>
+<li>Open Terminal (Applications/Utilities).</li>
+<li><p>In the Terminal window, type:</p>
+</li>
+<li><p>sudo defaults write com.apple.loginwindow LoginHook /path/to/script</p>
+</li>
+<li><p>(where /path/to/script is the full path to the script that you want to execute when a user logs in—it doesn’t have to be in the user’s Home directory).</p>
+</li>
+<li><p>This modifies the /var/root/Library/Preferences/com.apple.loginwindow file.</p>
+</li>
+<li><p>Type your password at the prompt, then press Return.<br><em>Mac OS X 10.2.x, 10.3.x, or 10.4.2 or later</em></p>
+</li>
+<li><p>Open the /etc/ttys file: In the Finder, choose <em>Go to Folder</em> from the <em>Go</em> menu, type /etc/, then click Go.</p>
+</li>
+<li>In the resulting window, open the ttys file in your preferred text editor (such as TextEdit).</li>
+<li><p>Look for a line that reads:</p>
+</li>
+<li><p>#console “/System/Library/CoreServices/loginwindow.app/Contents/MacOS/loginwindow” vt100 on secure window=/System/Library/CoreServices/WindowServer onoption=”/usr/libexec/getty std.9600”</p>
+</li>
+<li><p>Edit this line so that it reads as follows (there are no breaks in this line):</p>
+</li>
+<li><p>#console “/System/Library/CoreServices/loginwindow.app/Contents/MacOS/loginwindow -LoginHook /path/to/script” vt100 on secure window=/System/Library/CoreServices/WindowServer onoption=”/usr/libexec/getty std.9600”</p>
+</li>
+<li><p>(where /path/to/script is the full path to the script that you want to execute when a user logs in).</p>
+</li>
+<li><p>Save the file.</p>
+</li>
+</ol>
+<p>Be sure that the text editor you use to edit this file does not break the line above into more than one line. This method will also work in Mac OS X 10.3.</p>
+<p>发布日期： 2011-6-1</p>
+<p>仍然需要帮助？</p>
+<p><a href="https://support.apple.com/zh-cn/HT2420" target="_blank" rel="external">Mac OS X: Creating a login hook</a></p>
 
       
     </div>
@@ -353,11 +391,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Linux/" rel="tag"># Linux</a>
-          
-            <a href="/tags/docker/" rel="tag"># docker</a>
-          
-            <a href="/tags/xdebug/" rel="tag"># xdebug</a>
+            <a href="/tags/macOS/" rel="tag"># macOS</a>
           
         </div>
       
@@ -370,8 +404,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/06/30/wordpress-wp-query/" rel="next" title="WordPress中wp-query的用法详解">
-                <i class="fa fa-chevron-left"></i> WordPress中wp-query的用法详解
+              <a href="/2017/06/30/docker-cant-connet-xdebug/" rel="next" title="解决docker for mac使用xdebug无法连接主机的9000口">
+                <i class="fa fa-chevron-left"></i> 解决docker for mac使用xdebug无法连接主机的9000口
               </a>
             
           </div>
@@ -379,10 +413,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/06/30/creating-a-login-hook/" rel="prev" title="macOS创建登陆运行脚本">
-                macOS创建登陆运行脚本 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -502,7 +532,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#在mac的terminal中运行"><span class="nav-number">1.</span> <span class="nav-text">在mac的terminal中运行</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Mac-OS-X-Creating-a-login-hook"><span class="nav-number">1.</span> <span class="nav-text">Mac OS X: Creating a login hook</span></a></li></ol></div>
             
 
           </div>
