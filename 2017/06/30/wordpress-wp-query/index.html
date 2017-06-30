@@ -1,0 +1,913 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Wordpress," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="全文转载自https://www.endskin.com/wp_query-directions/  wp-query用法WP_Query 类是 WordPress 文章查询的核心，它的文章查询部分提供了很多可用参数，经过好几个版本的升级完善，让它越来越强大，本文就可以让你详细的了解所有查询参数和技巧。 作者查询和某些作者（用户）有关的文章，可以使用 4 个参数：  author（整数）：用户">
+<meta name="keywords" content="Wordpress">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WordPress中wp-query的用法详解">
+<meta property="og:url" content="https://stereoapp.github.io/2017/06/30/wordpress-wp-query/index.html">
+<meta property="og:site_name" content="zxf.log">
+<meta property="og:description" content="全文转载自https://www.endskin.com/wp_query-directions/  wp-query用法WP_Query 类是 WordPress 文章查询的核心，它的文章查询部分提供了很多可用参数，经过好几个版本的升级完善，让它越来越强大，本文就可以让你详细的了解所有查询参数和技巧。 作者查询和某些作者（用户）有关的文章，可以使用 4 个参数：  author（整数）：用户">
+<meta property="og:updated_time" content="2017-06-30T08:03:13.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="WordPress中wp-query的用法详解">
+<meta name="twitter:description" content="全文转载自https://www.endskin.com/wp_query-directions/  wp-query用法WP_Query 类是 WordPress 文章查询的核心，它的文章查询部分提供了很多可用参数，经过好几个版本的升级完善，让它越来越强大，本文就可以让你详细的了解所有查询参数和技巧。 作者查询和某些作者（用户）有关的文章，可以使用 4 个参数：  author（整数）：用户">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://stereoapp.github.io/2017/06/30/wordpress-wp-query/"/>
+
+
+
+
+
+  <title>WordPress中wp-query的用法详解 | zxf.log</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">zxf.log</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">$ tail -f zxf.log</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://stereoapp.github.io/2017/06/30/wordpress-wp-query/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="zxf">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="zxf.log">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">WordPress中wp-query的用法详解</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-30T15:54:01+08:00">
+                2017-06-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>全文转载自<a href="https://www.endskin.com/wp_query-directions/" target="_blank" rel="external">https://www.endskin.com/wp_query-directions/</a></p>
+</blockquote>
+<h1 id="wp-query用法"><a href="#wp-query用法" class="headerlink" title="wp-query用法"></a>wp-query用法</h1><p>WP_Query 类是 WordPress 文章查询的核心，它的文章查询部分提供了很多可用参数，经过好几个版本的升级完善，让它越来越强大，本文就可以让你详细的了解所有查询参数和技巧。</p>
+<h2 id="作者"><a href="#作者" class="headerlink" title="作者"></a>作者</h2><p>查询和某些作者（用户）有关的文章，可以使用 4 个参数：</p>
+<ul>
+<li>author（整数）：用户 ID</li>
+<li>author_name（字符串）：用户的昵称（“user_nicename” 字段）</li>
+<li>author__in（数组）：用户 ID</li>
+<li>author__not_in（数组）：用户 ID</li>
+</ul>
+<h3 id="获取一个作者的文章"><a href="#获取一个作者的文章" class="headerlink" title="获取一个作者的文章"></a>获取一个作者的文章</h3><p>根据用户 ID 获取：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="string">'author=123'</span> );</div></pre></td></tr></table></figure></p>
+<p>根据用户的昵称（“user_nicename” 字段）获取：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="string">'author_name=rami'</span> );</div></pre></td></tr></table></figure></p>
+<h3 id="获取多个作者的文章"><a href="#获取多个作者的文章" class="headerlink" title="获取多个作者的文章"></a>获取多个作者的文章</h3><p>根据用户 ID 获取多个作者的文章：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="string">'author=2,6,17,38'</span> );</div></pre></td></tr></table></figure></p>
+<h3 id="排除作者的文章"><a href="#排除作者的文章" class="headerlink" title="排除作者的文章"></a>排除作者的文章</h3><p>排除一个作者可以使用用户 ID 前边加上 “-” 的方式：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="string">'author=-12'</span> );</div></pre></td></tr></table></figure></p>
+<h3 id="多作者查询"><a href="#多作者查询" class="headerlink" title="多作者查询"></a>多作者查询</h3><p>获取多个作者的文章：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="keyword">array</span>( <span class="string">'author__in'</span> =&gt; <span class="keyword">array</span>( <span class="number">2</span>, <span class="number">6</span> ) ) );</div></pre></td></tr></table></figure></p>
+<p>排除多个作者的文章：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="keyword">array</span>( <span class="string">'author__not_in'</span> =&gt; <span class="keyword">array</span>( <span class="number">2</span>, <span class="number">6</span> ) ) );</div></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<h2 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h2><p>关于分类有 5 个可用的参数：</p>
+<ul>
+<li>cat（整数）：分类 ID</li>
+<li>category_name（字符串）：分类别名</li>
+<li>category__and（数组）：分类 ID</li>
+<li>category__in（数组）：分类 ID</li>
+<li>category__not_in（数组）：分类 ID</li>
+</ul>
+<h3 id="获取一个分类的文章"><a href="#获取一个分类的文章" class="headerlink" title="获取一个分类的文章"></a>获取一个分类的文章</h3><p>根据分类的 ID 获取一个分类的文章（包含此分类的子分类）：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="string">'cat=4'</span> );</div></pre></td></tr></table></figure></p>
+<p>根据分类的别名获取一个分类的文章（包含此分类的子分类）：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="string">'category_name=staff'</span> );</div></pre></td></tr></table></figure></p>
+<p>根据分类的 ID 获取一个分类的文章（不包含此分类的子分类）：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="string">'category__in=4'</span> );</div></pre></td></tr></table></figure></p>
+<h3 id="获取多个分类的文章"><a href="#获取多个分类的文章" class="headerlink" title="获取多个分类的文章"></a>获取多个分类的文章</h3><p>根据分类的 ID 获取多个分类的文章：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="string">'cat=2,6,17,38'</span> );</div></pre></td></tr></table></figure></p>
+<p>根据分类别名获取多个分类的文章：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="string">'category_name=staff,news'</span> );</div></pre></td></tr></table></figure></p>
+<p>根据分类别名获取同时拥有几个分类的文章：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="string">'category_name=staff+news'</span> );</div></pre></td></tr></table></figure></p>
+<h3 id="排除分类"><a href="#排除分类" class="headerlink" title="排除分类"></a>排除分类</h3><p>想要排除一些分类只需要在分类 ID 前加上 “-” 号：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="string">'cat=-12,-34,-56'</span> );</div></pre></td></tr></table></figure></p>
+<h3 id="多分类查询"><a href="#多分类查询" class="headerlink" title="多分类查询"></a>多分类查询</h3><p>获取同时有多个分类的文章，下边的代码会获取必须同时拥有 ID 为 2 和 6 的分类的文章：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="keyword">array</span>( <span class="string">'category__and'</span> =&gt; <span class="keyword">array</span>( <span class="number">2</span>, <span class="number">6</span> ) ) );</div></pre></td></tr></table></figure></p>
+<p>获取多个分类的文章，不包含其子分类，下边的代码获取了拥有 ID 为 2 或者 ID 为 6 的分类的文章：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="keyword">array</span>( <span class="string">'category__in'</span> =&gt; <span class="keyword">array</span>( <span class="number">2</span>, <span class="number">6</span> ) ) );</div></pre></td></tr></table></figure></p>
+<p>排除一些分类的文章：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="keyword">array</span>( <span class="string">'category__not_in'</span> =&gt; <span class="keyword">array</span>( <span class="number">2</span>, <span class="number">6</span> ) ) );</div></pre></td></tr></table></figure></p>
+<h2 id="标签"><a href="#标签" class="headerlink" title="标签"></a>标签</h2><p>获取关于标签的文章，可以使用 7 个参数：</p>
+<ul>
+<li>tag（字符串）：标签别名</li>
+<li>tag_id（整数）：标签 ID</li>
+<li>tag__end（数组）：一些标签 ID</li>
+<li>tag__in（数组）：一些标签 ID</li>
+<li>tag_slug__and（数组）：一些标签别名</li>
+<li>tag_slug__in（数组）：一些标签别名</li>
+</ul>
+<h3 id="获取一个标签的文章"><a href="#获取一个标签的文章" class="headerlink" title="获取一个标签的文章"></a>获取一个标签的文章</h3><p>根据标签别名获取有这个标签的文章：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="string">'tag=cooking'</span> );</div></pre></td></tr></table></figure></p>
+<p>根据标签 ID 获取有这个标签的文章：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="string">'tag_id=13'</span> );</div></pre></td></tr></table></figure></p>
+<h3 id="获取多个标签的文章"><a href="#获取多个标签的文章" class="headerlink" title="获取多个标签的文章"></a>获取多个标签的文章</h3><p>根据标签的别名获取带有这几个标签其中一个的文章：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="string">'tag=bread,baking'</span> );</div></pre></td></tr></table></figure></p>
+<p>根据标签别名获取同时拥有几个标签的文章：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="string">'tag=bread+baking+recipe'</span> );</div></pre></td></tr></table></figure></p>
+<h3 id="多标签查询"><a href="#多标签查询" class="headerlink" title="多标签查询"></a>多标签查询</h3><p>根据标签 ID 获取同时有几个标签的文章：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="keyword">array</span>( <span class="string">'tag__and'</span> =&gt; <span class="keyword">array</span>( <span class="number">37</span>, <span class="number">47</span> ) ) );</div></pre></td></tr></table></figure></p>
+<p>根据标签 ID 获取有这个标签的文章：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="keyword">array</span>( <span class="string">'tag__in'</span> =&gt; <span class="keyword">array</span>( <span class="number">37</span>, <span class="number">47</span> ) ) );</div></pre></td></tr></table></figure></p>
+<p>根据标签 ID 排除包含某些标签的文章：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="keyword">array</span>( <span class="string">'tag__not_in'</span> =&gt; <span class="keyword">array</span>( <span class="number">37</span>, <span class="number">47</span> ) ) );</div></pre></td></tr></table></figure></p>
+<p>tag_slug<strong>in 和 tag_slug</strong>and 的使用方法同上，只是把 ID 换成别名。</p>
+<h2 id="自定义分类法"><a href="#自定义分类法" class="headerlink" title="自定义分类法"></a>自定义分类法</h2><p>有关自定义分类法（Taxonomy）的查询可以使用 1 个参数：</p>
+<ul>
+<li>tax_query（数组）：分类法查询参数<ul>
+<li>relation（字符串）：条件的逻辑关系，OR（或者）或 AND（和）</li>
+<li>taxonomy（字符串）：分类法名称</li>
+<li>field（字符串）：根据分类法条款的什么字段查询，可选 term_id（分类条款 ID）、name（名称）和 slug（别名），默认是 term_id</li>
+<li>terms（整数 | 字符串 | 分类）：分类法条款</li>
+<li>include_children（布尔）：是否包含子分类法条款，默认是 True</li>
+<li>operator（字符串）：匹配运算符（IN、IN NOT 和 AND），默认是 IN</li>
+</ul>
+</li>
+</ul>
+<h3 id="简单的分类法查询"><a href="#简单的分类法查询" class="headerlink" title="简单的分类法查询"></a>简单的分类法查询</h3><p>获取 people 分类法里别名为 bob 的条款下的文章：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">$args = <span class="keyword">array</span>(</div><div class="line">    <span class="string">'post_type'</span> =&gt; <span class="string">'post'</span>,</div><div class="line">    <span class="string">'tax_query'</span> =&gt; <span class="keyword">array</span>(</div><div class="line">        <span class="keyword">array</span>(</div><div class="line">            <span class="string">'taxonomy'</span> =&gt; <span class="string">'people'</span>,</div><div class="line">            <span class="string">'field'</span>    =&gt; <span class="string">'slug'</span>,</div><div class="line">            <span class="string">'terms'</span>    =&gt; <span class="string">'bob'</span>,</div><div class="line">        ),</div><div class="line">    ),</div><div class="line">);</div><div class="line">$query = <span class="keyword">new</span> WP_Query( $args );</div></pre></td></tr></table></figure></p>
+<h3 id="多分类法查询"><a href="#多分类法查询" class="headerlink" title="多分类法查询"></a>多分类法查询</h3><p>获取同时是 movie_genre 分类法下别名为 action 或 comedy 的条款的文章和不是 actor 分类法下 ID 为 103 或 115 或 206 的条款的文章（略拗口）：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">$args = <span class="keyword">array</span>(</div><div class="line">    <span class="string">'post_type'</span> =&gt; <span class="string">'post'</span>,</div><div class="line">    <span class="string">'tax_query'</span> =&gt; <span class="keyword">array</span>(</div><div class="line">        <span class="string">'relation'</span> =&gt; <span class="string">'AND'</span>,</div><div class="line">        <span class="keyword">array</span>(</div><div class="line">            <span class="string">'taxonomy'</span> =&gt; <span class="string">'movie_genre'</span>,</div><div class="line">            <span class="string">'field'</span>    =&gt; <span class="string">'slug'</span>,</div><div class="line">            <span class="string">'terms'</span>    =&gt; <span class="keyword">array</span>( <span class="string">'action'</span>, <span class="string">'comedy'</span> ),</div><div class="line">        ),</div><div class="line">        <span class="keyword">array</span>(</div><div class="line">            <span class="string">'taxonomy'</span> =&gt; <span class="string">'actor'</span>,</div><div class="line">            <span class="string">'field'</span>    =&gt; <span class="string">'id'</span>,</div><div class="line">            <span class="string">'terms'</span>    =&gt; <span class="keyword">array</span>( <span class="number">103</span>, <span class="number">115</span>, <span class="number">206</span> ),</div><div class="line">            <span class="string">'operator'</span> =&gt; <span class="string">'NOT IN'</span>,</div><div class="line">        ),</div><div class="line">    ),</div><div class="line">);</div><div class="line">$query = <span class="keyword">new</span> WP_Query( $args );</div></pre></td></tr></table></figure></p>
+<p>获取是分类法 category（也就是分类）下别名为 quotes 的条款或是分类法 post_format 下别名为 post-format-quote 的条款的文章：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">$args = <span class="keyword">array</span>(</div><div class="line">    <span class="string">'post_type'</span> =&gt; <span class="string">'post'</span>,</div><div class="line">    <span class="string">'tax_query'</span> =&gt; <span class="keyword">array</span>(</div><div class="line">        <span class="string">'relation'</span> =&gt; <span class="string">'OR'</span>,</div><div class="line">        <span class="keyword">array</span>(</div><div class="line">            <span class="string">'taxonomy'</span> =&gt; <span class="string">'category'</span>,</div><div class="line">            <span class="string">'field'</span>    =&gt; <span class="string">'slug'</span>,</div><div class="line">            <span class="string">'terms'</span>    =&gt; <span class="keyword">array</span>( <span class="string">'quotes'</span> ),</div><div class="line">        ),</div><div class="line">        <span class="keyword">array</span>(</div><div class="line">            <span class="string">'taxonomy'</span> =&gt; <span class="string">'post_format'</span>,</div><div class="line">            <span class="string">'field'</span>    =&gt; <span class="string">'slug'</span>,</div><div class="line">            <span class="string">'terms'</span>    =&gt; <span class="keyword">array</span>( <span class="string">'post-format-quote'</span> ),</div><div class="line">        ),</div><div class="line">    ),</div><div class="line">);</div><div class="line">$query = <span class="keyword">new</span> WP_Query( $args );</div></pre></td></tr></table></figure></p>
+<h2 id="搜索"><a href="#搜索" class="headerlink" title="搜索"></a>搜索</h2><p>显示搜索关键词的结果，只有一个参数。</p>
+<ul>
+<li>s（字符串）：搜索关键字</li>
+</ul>
+<h3 id="搜索关键词"><a href="#搜索关键词" class="headerlink" title="搜索关键词"></a>搜索关键词</h3><p>搜索一个关键词：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="string">'s=keyword'</span> );</div></pre></td></tr></table></figure></p>
+<h2 id="文章和页面"><a href="#文章和页面" class="headerlink" title="文章和页面"></a>文章和页面</h2><p>根据文章信息获取文章。请记住，默认情况下，post_type 一般都是 post（文章）。 有 9 个参数可以使用：</p>
+<ul>
+<li>p（整数）：文章 ID</li>
+<li>name（字符串）：文章别名</li>
+<li>page_id（整数）：页面 ID</li>
+<li>postname（字符串）：页面别名</li>
+<li>post_parent（整数）：如果填写 ID 则只返回它的子项目，如果填 0 则只返回顶级项目</li>
+<li>post_parent__in（数组）：一些父级项目的 ID，获取它们的子项目</li>
+<li>post_parent__not_in（数组）：一些父级项目的 ID，排除它们的子项目</li>
+<li>post__in（数组）：一些文章 ID</li>
+<li>post__not_in（数组）：一些文章 ID</li>
+</ul>
+<h3 id="根据-ID-获取文章或页面"><a href="#根据-ID-获取文章或页面" class="headerlink" title="根据 ID 获取文章或页面"></a>根据 ID 获取文章或页面</h3><p>根据 ID 获取文章：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="string">'p=7'</span> );</div></pre></td></tr></table></figure></p>
+<p>根据 ID 获取页面：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="string">'page_id=7'</span> );</div></pre></td></tr></table></figure></p>
+<h3 id="根据别名获取文章或页面"><a href="#根据别名获取文章或页面" class="headerlink" title="根据别名获取文章或页面"></a>根据别名获取文章或页面</h3><p>根据别名获取文章：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="string">'name=about-my-life'</span> );</div></pre></td></tr></table></figure></p>
+<p>根据别名获取页面：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="string">'pagename=contact'</span> );</div></pre></td></tr></table></figure></p>
+<h3 id="获取文章或页面的子项目"><a href="#获取文章或页面的子项目" class="headerlink" title="获取文章或页面的子项目"></a>获取文章或页面的子项目</h3><p>根据别名获取一个页面的子页面，contact_us 是父页面别名，canada 是子页面别名：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="string">'pagename=contact_us/canada'</span> );</div></pre></td></tr></table></figure></p>
+<p>获取一个文章的子项目：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="string">'post_parent=93'</span> );</div></pre></td></tr></table></figure></p>
+<p>获取所有顶级项目：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="string">'post_parent=0'</span> );</div></pre></td></tr></table></figure></p>
+<p>同时获取多个父级文章的子项目：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="keyword">array</span>( <span class="string">'post_parent__in'</span> =&gt; <span class="keyword">array</span>( <span class="number">2</span>, <span class="number">5</span>, <span class="number">12</span>, <span class="number">14</span>, <span class="number">20</span> ) ) );</div></pre></td></tr></table></figure></p>
+<h3 id="多文章和页面查询"><a href="#多文章和页面查询" class="headerlink" title="多文章和页面查询"></a>多文章和页面查询</h3><p>根据 ID 获取几个页面：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="keyword">array</span>( <span class="string">'post_type'</span> =&gt; <span class="string">'page'</span>, <span class="string">'post__in'</span> =&gt; <span class="keyword">array</span>( <span class="number">2</span>, <span class="number">5</span>, <span class="number">12</span>, <span class="number">14</span>, <span class="number">20</span> ) ) );</div></pre></td></tr></table></figure></p>
+<p>排除几个 ID 的文章：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="keyword">array</span>( <span class="string">'post_type'</span> =&gt; <span class="string">'post'</span>, <span class="string">'post__not_in'</span> =&gt; <span class="keyword">array</span>( <span class="number">2</span>, <span class="number">5</span>, <span class="number">12</span>, <span class="number">14</span>, <span class="number">20</span> ) ) );</div></pre></td></tr></table></figure></p>
+<p>PS：post<strong>in 和 post</strong>not_in 不能一起用。 PS2：post__not_in 不能使用以逗号分隔的字符串，只能是数组：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//这是错误的，不会工作</span></div><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="string">'post__not_in=1,2,3'</span> );</div><div class="line"></div><div class="line"><span class="comment">//这才是正确的</span></div><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="keyword">array</span>( <span class="string">'post__not_in'</span> =&gt; <span class="keyword">array</span>( <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span> ) ) );</div></pre></td></tr></table></figure>
+<h2 id="密码"><a href="#密码" class="headerlink" title="密码"></a>密码</h2><p>有关文章密码的查询，可以使用 2 个参数：</p>
+<ul>
+<li>has_password（布尔）：文章是否有密码</li>
+<li>post_password（字符串）：指定的文章密码</li>
+</ul>
+<h3 id="有无密码"><a href="#有无密码" class="headerlink" title="有无密码"></a>有无密码</h3><p>获取有密码的文章：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="keyword">array</span>( <span class="string">'has_password'</span> =&gt; <span class="keyword">true</span> ) );</div></pre></td></tr></table></figure></p>
+<p>获取没有密码的文章：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="keyword">array</span>( <span class="string">'has_password'</span> =&gt; <span class="keyword">false</span> ) );</div></pre></td></tr></table></figure></p>
+<h3 id="指定密码"><a href="#指定密码" class="headerlink" title="指定密码"></a>指定密码</h3><p>获取密码是指定内容的文章：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="string">'post_password=123'</span> );</div></pre></td></tr></table></figure></p>
+<h2 id="类型"><a href="#类型" class="headerlink" title="类型"></a>类型</h2><p>有关文章类型的查询，只有一个参数可以使用：</p>
+<ul>
+<li>post_type（字符串 | 数组）：文章的类型，一般默认都是 post（文章）<br>一个文章类型</li>
+</ul>
+<p>获取页面：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="string">'post_type=page'</span> );</div></pre></td></tr></table></figure></p>
+<p>获取自定义文章类型：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="string">'post_type=custom_post_type_name'</span> );</div></pre></td></tr></table></figure></p>
+<h3 id="多个文章类型"><a href="#多个文章类型" class="headerlink" title="多个文章类型"></a>多个文章类型</h3><p>获取多个文章类型：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="keyword">array</span>( <span class="string">'post_type'</span> =&gt; <span class="keyword">array</span>( <span class="string">'post'</span>, <span class="string">'page'</span>, <span class="string">'movie'</span>, <span class="string">'book'</span> ) ) );</div></pre></td></tr></table></figure></p>
+<p>获取全部文章类型：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="string">'post_type=any'</span> );</div></pre></td></tr></table></figure></p>
+<h2 id="状态"><a href="#状态" class="headerlink" title="状态"></a>状态</h2><p>有关文章状态的查询。文章状态指的是文章当前处于什么情况，比如 “已发布”、“草稿”、“待审核” 和 “定时发布” 等等，文章状态是可以由主题或者插件开发者扩展的。 关于文章状态可以使用一个参数：</p>
+<ul>
+<li>post_status（字符串 | 数组）：文章的状态，一般默认都是 publish（已发布）</li>
+</ul>
+<h3 id="获取一个状态的文章"><a href="#获取一个状态的文章" class="headerlink" title="获取一个状态的文章"></a>获取一个状态的文章</h3><p>获取草稿文章：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="string">'post_status=draft'</span> );</div></pre></td></tr></table></figure></p>
+<h3 id="获取多个状态的文章"><a href="#获取多个状态的文章" class="headerlink" title="获取多个状态的文章"></a>获取多个状态的文章</h3><p>获取多个状态下的文章：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="keyword">array</span>( <span class="string">'post_status'</span> =&gt; <span class="keyword">array</span>( <span class="string">'pending'</span>, <span class="string">'draft'</span>, <span class="string">'future'</span> ) ) );</div></pre></td></tr></table></figure></p>
+<p>获取全部状态的文章：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="string">'post_status=any'</span> );</div></pre></td></tr></table></figure></p>
+<h2 id="分页"><a href="#分页" class="headerlink" title="分页"></a>分页</h2><p>有关分页的查询，有 7 个参数可以使用：</p>
+<ul>
+<li>nopaging（布尔）：将文章分页还是全部获取。默认是 False：分页</li>
+<li>posts_per_page（整数）：每页显示多少文章，如果设置成 –1 则不分页</li>
+<li>posts_per_archive_page（整数）：和 posts_per_page 是一样的，不过这个只有在当前查询是根据存档或是搜索的情况下才生效</li>
+<li>offset（整数）：偏移值，去掉前边几篇文章，再从后边找回来</li>
+<li>paged（整数）：页码，指定文章分页的当前页</li>
+<li>page（整数）：静态首页的页码</li>
+<li>ignore_sticky_posts（布尔）：是否忽略指定文章，要忽略置顶文章可以设置成 True，默认是 False</li>
+</ul>
+<h3 id="设置每页文章数"><a href="#设置每页文章数" class="headerlink" title="设置每页文章数"></a>设置每页文章数</h3><p>设置每页的文章数量为 3 篇文章：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="string">'posts_per_page=3'</span> );</div></pre></td></tr></table></figure></p>
+<h3 id="显示全部文章"><a href="#显示全部文章" class="headerlink" title="显示全部文章"></a>显示全部文章</h3><p>获取全部文章，不分页（方法一）：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="string">'nopaging=1'</span> );</div></pre></td></tr></table></figure></p>
+<p>获取全部文章，不分页（方法二）：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="string">'posts_per_page=-1'</span> );</div></pre></td></tr></table></figure></p>
+<h3 id="偏移"><a href="#偏移" class="headerlink" title="偏移"></a>偏移</h3><p>从第 4 个文章开始获取：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="string">'offset=3'</span> ) );</div></pre></td></tr></table></figure></p>
+<p>每页 5 篇文章，而但向前移位 3 篇：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="keyword">array</span>( <span class="string">'posts_per_page'</span> =&gt; <span class="number">5</span>, <span class="string">'offset'</span> =&gt; <span class="number">3</span> ) );</div></pre></td></tr></table></figure></p>
+<h3 id="获取第-N-页文章"><a href="#获取第-N-页文章" class="headerlink" title="获取第 N 页文章"></a>获取第 N 页文章</h3><p>获取第 6 页的文章：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="string">'paged=6'</span> );</div></pre></td></tr></table></figure></p>
+<h3 id="获取当前页文章"><a href="#获取当前页文章" class="headerlink" title="获取当前页文章"></a>获取当前页文章</h3><p>获取当前页文章：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="keyword">array</span>( <span class="string">'paged'</span> =&gt; get_query_var( <span class="string">'paged'</span> ) ) );</div></pre></td></tr></table></figure></p>
+<p>获取当前页文章，如果没有指定页码则默认第一页：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$paged = ( get_query_var(<span class="string">'paged'</span>) ) ? get_query_var(<span class="string">'paged'</span>) : <span class="number">1</span>;</div><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="keyword">array</span>( <span class="string">'paged'</span> =&gt; $paged ) );</div></pre></td></tr></table></figure></p>
+<h3 id="置顶文章"><a href="#置顶文章" class="headerlink" title="置顶文章"></a>置顶文章</h3><p>获取第一篇置顶文章：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$sticky = get_option( <span class="string">'sticky_posts'</span> );</div><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="string">'p='</span> . $sticky[<span class="number">0</span>] );</div></pre></td></tr></table></figure></p>
+<p>获取第一篇置顶文章，如果没有置顶文章则获取一篇最新的文章：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$args = <span class="keyword">array</span>(</div><div class="line">    <span class="string">'posts_per_page'</span>      =&gt; <span class="number">1</span>,</div><div class="line">    <span class="string">'post__in'</span>            =&gt; get_option( <span class="string">'sticky_posts'</span> ),</div><div class="line">    <span class="string">'ignore_sticky_posts'</span> =&gt; <span class="number">1</span>,</div><div class="line">);</div><div class="line">$query = <span class="keyword">new</span> WP_Query( $args );</div></pre></td></tr></table></figure></p>
+<h3 id="排除置顶文章"><a href="#排除置顶文章" class="headerlink" title="排除置顶文章"></a>排除置顶文章</h3><p>排除全部置顶文章：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="keyword">array</span>( <span class="string">'post__not_in'</span> =&gt; get_option( <span class="string">'sticky_posts'</span> ) ) );</div></pre></td></tr></table></figure></p>
+<p>忽略指定文章的置顶性，在循环里按正常排序出现：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="string">'ignore_sticky_posts=1'</span> );</div></pre></td></tr></table></figure></p>
+<h2 id="排序和排序类型"><a href="#排序和排序类型" class="headerlink" title="排序和排序类型"></a>排序和排序类型</h2><p>有关文章排序方法和类型的查询，有两个参数可以使用：</p>
+<ul>
+<li>order（字符串 | 数组）：排序方法，ASC 为正序（从小到大）；DESC 为倒序（从大到小）</li>
+<li>orderby（字符串 | 数组）：根据什么字段排序，默认是 post_date（文章日期）</li>
+</ul>
+<h3 id="按标题倒序"><a href="#按标题倒序" class="headerlink" title="按标题倒序"></a>按标题倒序</h3><p>根据文章标题进行倒序排列：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="keyword">array</span> ( <span class="string">'orderby'</span> =&gt; <span class="string">'title'</span>, <span class="string">'order'</span> =&gt; <span class="string">'DESC'</span> ) );</div></pre></td></tr></table></figure></p>
+<p>先根据 menu_order 排序，如果出现无法排序的情况（比如相同或者为空）则再利用 title 排序。<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="keyword">array</span> ( <span class="string">'orderby'</span> =&gt; <span class="string">'menu_order title'</span>, <span class="string">'order'</span> =&gt; <span class="string">'DESC'</span> ) );</div></pre></td></tr></table></figure></p>
+<h3 id="随机排序"><a href="#随机排序" class="headerlink" title="随机排序"></a>随机排序</h3><p>获取一篇随机文章：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="keyword">array</span> ( <span class="string">'orderby'</span> =&gt; <span class="string">'rand'</span>, <span class="string">'posts_per_page'</span> =&gt; <span class="string">'1'</span> ) );</div></pre></td></tr></table></figure></p>
+<h3 id="热门文章"><a href="#热门文章" class="headerlink" title="热门文章"></a>热门文章</h3><p>获取根据评论数量排序的文章：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="keyword">array</span>( <span class="string">'orderby'</span> =&gt; <span class="string">'comment_count'</span> ) );</div></pre></td></tr></table></figure></p>
+<h3 id="多条件不同排序"><a href="#多条件不同排序" class="headerlink" title="多条件不同排序"></a>多条件不同排序</h3><p>给多个排序条件，每个排序条件有不同的排序方法：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="keyword">array</span>( <span class="string">'orderby'</span> =&gt; <span class="keyword">array</span>( <span class="string">'title'</span> =&gt; <span class="string">'DESC'</span>, <span class="string">'menu_order'</span> =&gt; <span class="string">'ASC'</span> ) ) );</div></pre></td></tr></table></figure></p>
+<h3 id="自定义字段"><a href="#自定义字段" class="headerlink" title="自定义字段"></a>自定义字段</h3><p>获取文章自定义字段 age 是 3 或 4 的文章，并且按照 age 字段值的数字大小排序：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">$args = <span class="keyword">array</span>(</div><div class="line">    <span class="string">'meta_key'</span>   =&gt; <span class="string">'age'</span>,</div><div class="line">    <span class="string">'orderby'</span>    =&gt; <span class="string">'meta_value_num'</span>,</div><div class="line">    <span class="string">'order'</span>      =&gt; <span class="string">'ASC'</span>,</div><div class="line">    <span class="string">'meta_query'</span> =&gt; <span class="keyword">array</span>(</div><div class="line">        <span class="keyword">array</span>(</div><div class="line">            <span class="string">'key'</span>     =&gt; <span class="string">'age'</span>,</div><div class="line">            <span class="string">'value'</span>   =&gt; <span class="keyword">array</span>( <span class="number">3</span>, <span class="number">4</span> ),</div><div class="line">            <span class="string">'compare'</span> =&gt; <span class="string">'IN'</span>,</div><div class="line">        ),</div><div class="line">    ),</div><div class="line">);</div><div class="line">$query = <span class="keyword">new</span> WP_Query( $args );</div></pre></td></tr></table></figure></p>
+<h2 id="日期"><a href="#日期" class="headerlink" title="日期"></a>日期</h2><p>和文章日期有关的查询，有 9 个参数：</p>
+<ul>
+<li>year（整数）：4 位数的年份，比如 2014</li>
+<li>monthnum（整数）：月份，从 1 到 12</li>
+<li>w（整数）：周，从 0 到 53</li>
+<li>day（整数）：日，从 1 到 31</li>
+<li>hour（整数）：小时，从 0 到 23</li>
+<li>minute（整数）：分钟，从 0 到 60</li>
+<li>second（整数）：秒，从 0 到 60</li>
+<li>m（整数）：年月，比如 201409</li>
+<li>date_query（数组）：复杂的日期查询<ul>
+<li>year（整数）：4 位数的年份，比如 2014</li>
+<li>month（整数）：月份，从 1 到 12</li>
+<li>week（整数）：周，从 0 到 53</li>
+<li>day（整数）：日，从 1 到 31</li>
+<li>hour（整数）：小时，从 0 到 23</li>
+<li>minute（整数）：分钟，从 0 到 59</li>
+<li>second（整数）：秒，从 0 到 59</li>
+<li>before（字符串 | 数组）：开启查询日期，可以是能被 strtotime() 函数解析的日期字符串，还可以使用数组：<ul>
+<li>year（整数）：4 位数的年份，比如 2014，默认为空</li>
+<li>month（整数）：月份，从 1 到 12，默认是 1</li>
+<li>day（整数）：日，从 1 到 31，默认是 1</li>
+</ul>
+</li>
+<li>after（字符串 | 数组）：结束查询日期，可以是能被 strtotime() 函数解析的日期字符串，还可以使用数组：<ul>
+<li>year（整数）：4 位数的年份，比如 2014，默认为空</li>
+<li>month（整数）：月份，从 1 到 12，默认是 12</li>
+<li>day（整数）：日，从 1 到 31，默认是本月最后一天</li>
+</ul>
+</li>
+<li>inclusive（布尔）：before 和 after 是否包含所指定本日的文章</li>
+<li>compare（字符串）：使用什么比较符号（=、!=、&gt;、&gt;=、&lt;、&lt;=、IN、NOT IN、BETWEEN、NOT、BETWEEN）</li>
+<li>column（字符串）：匹配的日期字段，默认是 post_date</li>
+<li>relation（字符串）：条件的逻辑关系，OR（或者）或 AND（和）</li>
+</ul>
+</li>
+</ul>
+<p>获取 2012 年 12 月 12 日的文章<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="string">'year=2012&amp;monthnum=12&amp;day=12'</span> );</div></pre></td></tr></table></figure></p>
+<p>或者<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">$args = <span class="keyword">array</span>(</div><div class="line">    <span class="string">'date_query'</span> =&gt; <span class="keyword">array</span>(</div><div class="line">        <span class="keyword">array</span>(</div><div class="line">            <span class="string">'year'</span>  =&gt; <span class="number">2012</span>,</div><div class="line">            <span class="string">'month'</span> =&gt; <span class="number">12</span>,</div><div class="line">            <span class="string">'day'</span>   =&gt; <span class="number">12</span>,</div><div class="line">        ),</div><div class="line">    ),</div><div class="line">);</div><div class="line">$query = <span class="keyword">new</span> WP_Query( $args );</div></pre></td></tr></table></figure></p>
+<p>获取今天发布的文章<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$today = getdate();</div><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="string">'year='</span> . $today[<span class="string">'year'</span>] . <span class="string">'&amp;monthnum='</span> . $today[<span class="string">'mon'</span>] . <span class="string">'&amp;day='</span> . $today[<span class="string">'mday'</span>] );</div></pre></td></tr></table></figure></p>
+<p>或者：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">$today = getdate();</div><div class="line">$args = <span class="keyword">array</span>(</div><div class="line">    <span class="string">'date_query'</span> =&gt; <span class="keyword">array</span>(</div><div class="line">        <span class="keyword">array</span>(</div><div class="line">            <span class="string">'year'</span>  =&gt; $today[<span class="string">'year'</span>],</div><div class="line">            <span class="string">'month'</span> =&gt; $today[<span class="string">'mon'</span>],</div><div class="line">            <span class="string">'day'</span>   =&gt; $today[<span class="string">'mday'</span>],</div><div class="line">        ),</div><div class="line">    ),</div><div class="line">);</div><div class="line">$query = <span class="keyword">new</span> WP_Query( $args );</div></pre></td></tr></table></figure></p>
+<p>获取本周发布的文章<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$week = date( <span class="string">'W'</span> );</div><div class="line">$year = date( <span class="string">'Y'</span> );</div><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="string">'year='</span> . $year . <span class="string">'&amp;w='</span> . $week );</div></pre></td></tr></table></figure></p>
+<p>或者：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">$args = <span class="keyword">array</span>(</div><div class="line">    <span class="string">'date_query'</span> =&gt; <span class="keyword">array</span>(</div><div class="line">        <span class="keyword">array</span>(</div><div class="line">            <span class="string">'year'</span> =&gt; date( <span class="string">'Y'</span> ),</div><div class="line">            <span class="string">'week'</span> =&gt; date( <span class="string">'W'</span> ),</div><div class="line">        ),</div><div class="line">    ),</div><div class="line">);</div><div class="line">$query = <span class="keyword">new</span> WP_Query( $args );</div></pre></td></tr></table></figure></p>
+<p>获取上午 9 点到下午 5 点的文章<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">$args = <span class="keyword">array</span>(</div><div class="line">    <span class="string">'date_query'</span> =&gt; <span class="keyword">array</span>(</div><div class="line">        <span class="keyword">array</span>(</div><div class="line">            <span class="string">'hour'</span>      =&gt; <span class="number">9</span>,</div><div class="line">            <span class="string">'compare'</span>   =&gt; <span class="string">'&gt;='</span>,</div><div class="line">        ),</div><div class="line">        <span class="keyword">array</span>(</div><div class="line">            <span class="string">'hour'</span>      =&gt; <span class="number">17</span>,</div><div class="line">            <span class="string">'compare'</span>   =&gt; <span class="string">'&lt;='</span>,</div><div class="line">        ),</div><div class="line">        <span class="keyword">array</span>(</div><div class="line">            <span class="string">'dayofweek'</span> =&gt; <span class="keyword">array</span>( <span class="number">2</span>, <span class="number">6</span> ),</div><div class="line">            <span class="string">'compare'</span>   =&gt; <span class="string">'BETWEEN'</span>,</div><div class="line">        ),</div><div class="line">    ),</div><div class="line">    <span class="string">'posts_per_page'</span> =&gt; <span class="number">-1</span>,</div><div class="line">);</div><div class="line">$query = <span class="keyword">new</span> WP_Query( $args );</div></pre></td></tr></table></figure></p>
+<p>获取 2013 年 1 月 1 日到 2013 年 2 月 18 日的文章<br>包含 2013 年 1 月 1 日和 2013 年 2 月 18 日的文章：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">$args = <span class="keyword">array</span>(</div><div class="line">    <span class="string">'date_query'</span> =&gt; <span class="keyword">array</span>(</div><div class="line">        <span class="keyword">array</span>(</div><div class="line">            <span class="string">'after'</span>     =&gt; <span class="string">'January 1st, 2013'</span>,</div><div class="line">            <span class="string">'before'</span>    =&gt; <span class="keyword">array</span>(</div><div class="line">                <span class="string">'year'</span>  =&gt; <span class="number">2013</span>,</div><div class="line">                <span class="string">'month'</span> =&gt; <span class="number">2</span>,</div><div class="line">                <span class="string">'day'</span>   =&gt; <span class="number">28</span>,</div><div class="line">            ),</div><div class="line">            <span class="string">'inclusive'</span> =&gt; <span class="keyword">true</span>,</div><div class="line">        ),</div><div class="line">    ),</div><div class="line">    <span class="string">'posts_per_page'</span> =&gt; <span class="number">-1</span>,</div><div class="line">);</div><div class="line">$query = <span class="keyword">new</span> WP_Query( $args );</div></pre></td></tr></table></figure></p>
+<p>不包含 2013 年 1 月 1 日和 2013 年 2 月 18 日的文章：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">$args = <span class="keyword">array</span>(</div><div class="line">    <span class="string">'date_query'</span> =&gt; <span class="keyword">array</span>(</div><div class="line">        <span class="keyword">array</span>(</div><div class="line">            <span class="string">'after'</span>     =&gt; <span class="string">'January 1st, 2013'</span>,</div><div class="line">            <span class="string">'before'</span>    =&gt; <span class="keyword">array</span>(</div><div class="line">                <span class="string">'year'</span>  =&gt; <span class="number">2013</span>,</div><div class="line">                <span class="string">'month'</span> =&gt; <span class="number">2</span>,</div><div class="line">                <span class="string">'day'</span>   =&gt; <span class="number">28</span>,</div><div class="line">            ),</div><div class="line">            <span class="string">'inclusive'</span> =&gt; <span class="keyword">false</span>,</div><div class="line">        ),</div><div class="line">    ),</div><div class="line">    <span class="string">'posts_per_page'</span> =&gt; <span class="number">-1</span>,</div><div class="line">);</div><div class="line">$query = <span class="keyword">new</span> WP_Query( $args );</div></pre></td></tr></table></figure></p>
+<p>获取在一年前发布却在一个月前修改过的文章<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">$args = <span class="keyword">array</span>(</div><div class="line">    <span class="string">'date_query'</span> =&gt; <span class="keyword">array</span>(</div><div class="line">        <span class="keyword">array</span>(</div><div class="line">            <span class="string">'column'</span> =&gt; <span class="string">'post_date_gmt'</span>,</div><div class="line">            <span class="string">'before'</span> =&gt; <span class="string">'1 year ago'</span>,</div><div class="line">        ),</div><div class="line">        <span class="keyword">array</span>(</div><div class="line">            <span class="string">'column'</span> =&gt; <span class="string">'post_modified_gmt'</span>,</div><div class="line">            <span class="string">'after'</span>  =&gt; <span class="string">'1 month ago'</span>,</div><div class="line">        ),</div><div class="line">    ),</div><div class="line">    <span class="string">'posts_per_page'</span> =&gt; <span class="number">-1</span>,</div><div class="line">);</div><div class="line">$query = <span class="keyword">new</span> WP_Query( $args );</div></pre></td></tr></table></figure></p>
+<h2 id="自定义字段-1"><a href="#自定义字段-1" class="headerlink" title="自定义字段"></a>自定义字段</h2><p>有关自定义字段的查询，可用使用 9 个参数：</p>
+<ul>
+<li>meta_key（字符串）：自定义字段的名（key）</li>
+<li>meta_value（字符串）：自定义字段的值（value）</li>
+<li>meta_value_num（数字）：自定义字段的值（value）</li>
+<li>meta_compare（字符串）：匹配方法（=、!=、&gt;、&gt;=、&lt;、&lt;=），默认是 “=”</li>
+<li>meta_query（数组）：处理复杂的查询</li>
+<li>relation（字符串）：条件的逻辑关系，OR（或者）或 AND（和）</li>
+<li>key（字符串）：自定义字段的名（key）</li>
+<li>value（字符串）：自定义字段的值（value）</li>
+<li>compare（字符串）：匹配方法（=、!=、&gt;、&gt;=、&lt;、&lt;=、LIKE、NOT LIKE、IN、NOT IN、BETWEEN、NOT BETWEEN、EXISTS、NOT EXISTS），默认是 “=”</li>
+<li>type（字符串）：自定义字段的类型（NUMERIC、BINARY、CHAR、DATE、DATETIME、DECIMAL、SIGNED、TIME、UNSIGNED），默认是 “CHAR”</li>
+</ul>
+<h3 id="简单的自定义字段查询"><a href="#简单的自定义字段查询" class="headerlink" title="简单的自定义字段查询"></a>简单的自定义字段查询</h3><p>获取拥有自定义字段 color 的文章：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="string">'meta_key=color'</span> );</div></pre></td></tr></table></figure></p>
+<p>获取自定义字段的值为 “blue” 的文章，不管字段的键值是什么：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="string">'meta_value=blue'</span> );</div></pre></td></tr></table></figure></p>
+<p>获取自定义字段的值为 “blue” 的页面，不管字段的键值是什么：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="string">'meta_value=blue&amp;post_type=page'</span> );</div></pre></td></tr></table></figure></p>
+<p>获取自定义字段 color 是 “blue” 的文章：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="keyword">array</span>( <span class="string">'meta_key'</span> =&gt; <span class="string">'color'</span>, <span class="string">'meta_value'</span> =&gt; <span class="string">'blue'</span> ) );</div></pre></td></tr></table></figure></p>
+<p>获取自定义字段 color 不是 “blue” 的文章：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="keyword">array</span>( <span class="string">'meta_key'</span> =&gt; <span class="string">'color'</span>, <span class="string">'meta_value'</span> =&gt; <span class="string">'blue'</span>, <span class="string">'meta_compare'</span> =&gt; <span class="string">'!='</span> ) );</div></pre></td></tr></table></figure></p>
+<p>获取文章类型是 “product” 的文章，并且自定义字段 price 小于或者等于 22：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="keyword">array</span>( <span class="string">'meta_key'</span> =&gt; <span class="string">'price'</span>, <span class="string">'meta_value'</span> =&gt; <span class="string">'22'</span>, <span class="string">'meta_compare'</span> =&gt; <span class="string">'&lt;='</span>, <span class="string">'post_type'</span> =&gt; <span class="string">'product'</span> ) );</div></pre></td></tr></table></figure></p>
+<h3 id="简单的复杂查询"><a href="#简单的复杂查询" class="headerlink" title="简单的复杂查询"></a>简单的复杂查询</h3><p>获取 product 自定义文章类型中 color 自定义字段不包含 “blue” 的文章：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">$args = <span class="keyword">array</span>(</div><div class="line">    <span class="string">'post_type'</span>  =&gt; <span class="string">'product'</span>,</div><div class="line">    <span class="string">'meta_query'</span> =&gt; <span class="keyword">array</span>(</div><div class="line">        <span class="keyword">array</span>(</div><div class="line">            <span class="string">'key'</span>     =&gt; <span class="string">'color'</span>,</div><div class="line">            <span class="string">'value'</span>   =&gt; <span class="string">'blue'</span>,</div><div class="line">            <span class="string">'compare'</span> =&gt; <span class="string">'NOT LIKE'</span>,</div><div class="line">        ),</div><div class="line">    ),</div><div class="line">);</div><div class="line">$query = <span class="keyword">new</span> WP_Query( $args );</div></pre></td></tr></table></figure></p>
+<h3 id="复杂的查询"><a href="#复杂的查询" class="headerlink" title="复杂的查询"></a>复杂的查询</h3><p>多自定义字段匹配：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">$args = <span class="keyword">array</span>(</div><div class="line">    <span class="string">'post_type'</span>  =&gt; <span class="string">'product'</span>,</div><div class="line">    <span class="string">'meta_query'</span> =&gt; <span class="keyword">array</span>(</div><div class="line">        <span class="keyword">array</span>(</div><div class="line">            <span class="string">'key'</span>     =&gt; <span class="string">'color'</span>,</div><div class="line">            <span class="string">'value'</span>   =&gt; <span class="string">'blue'</span>,</div><div class="line">            <span class="string">'compare'</span> =&gt; <span class="string">'NOT LIKE'</span>,</div><div class="line">        ),</div><div class="line">        <span class="keyword">array</span>(</div><div class="line">            <span class="string">'key'</span> =&gt; <span class="string">'price'</span>,</div><div class="line">            <span class="string">'value'</span>   =&gt; <span class="keyword">array</span>( <span class="number">20</span>, <span class="number">100</span> ),</div><div class="line">            <span class="string">'type'</span>    =&gt; <span class="string">'numeric'</span>,</div><div class="line">            <span class="string">'compare'</span> =&gt; <span class="string">'BETWEEN'</span>,</div><div class="line">        ),</div><div class="line">    ),</div><div class="line">);</div><div class="line">$query = <span class="keyword">new</span> WP_Query( $args );</div></pre></td></tr></table></figure></p>
+<p>在 product 自定义文章类型里获取 color 自定义字段不包含 “blue” 或者 price 字段是 20 到 100 之间的文章：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">$args = <span class="keyword">array</span>(</div><div class="line">    <span class="string">'post_type'</span>  =&gt; <span class="string">'product'</span>,</div><div class="line">    <span class="string">'meta_query'</span> =&gt; <span class="keyword">array</span>(</div><div class="line">        <span class="string">'relation'</span> =&gt; <span class="string">'OR'</span>,</div><div class="line">        <span class="keyword">array</span>(</div><div class="line">            <span class="string">'key'</span>     =&gt; <span class="string">'color'</span>,</div><div class="line">            <span class="string">'value'</span>   =&gt; <span class="string">'blue'</span>,</div><div class="line">            <span class="string">'compare'</span> =&gt; <span class="string">'NOT LIKE'</span>,</div><div class="line">        ),</div><div class="line">        <span class="keyword">array</span>(</div><div class="line">            <span class="string">'key'</span>     =&gt; <span class="string">'price'</span>,</div><div class="line">            <span class="string">'value'</span>   =&gt; <span class="keyword">array</span>( <span class="number">20</span>, <span class="number">100</span> ),</div><div class="line">            <span class="string">'type'</span>    =&gt; <span class="string">'numeric'</span>,</div><div class="line">            <span class="string">'compare'</span> =&gt; <span class="string">'BETWEEN'</span>,</div><div class="line">        ),</div><div class="line">    ),</div><div class="line">);</div><div class="line">$query = <span class="keyword">new</span> WP_Query( $args );</div></pre></td></tr></table></figure></p>
+<h2 id="用户权限"><a href="#用户权限" class="headerlink" title="用户权限"></a>用户权限</h2><p>关于用户权限的文章查询有一个参数可以使用：</p>
+<ul>
+<li>perm（字符串）：用户权限</li>
+</ul>
+<h3 id="只有用户有权限才显示文章"><a href="#只有用户有权限才显示文章" class="headerlink" title="只有用户有权限才显示文章"></a>只有用户有权限才显示文章</h3><p>只有用户有权限才获取已发布和私密的文章：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="keyword">array</span>( <span class="string">'post_status'</span> =&gt; <span class="keyword">array</span>( <span class="string">'publish'</span>, <span class="string">'private'</span> ), <span class="string">'perm'</span> =&gt; <span class="string">'readable'</span> ) );</div></pre></td></tr></table></figure></p>
+<h2 id="文章缓存"><a href="#文章缓存" class="headerlink" title="文章缓存"></a>文章缓存</h2><p>有关文章数据的缓存，有 3 个参数：</p>
+<ul>
+<li>cache_results（布尔）：文章信息缓存</li>
+<li>update_post_meta_cache（布尔）：文章 meta 信息缓存</li>
+<li>update_post_term_cache（布尔）：文章分类法信息缓存</li>
+</ul>
+<p>获取文章但不更新文章缓存<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="keyword">array</span>( <span class="string">'posts_per_page'</span> =&gt; <span class="number">50</span>, <span class="string">'cache_results'</span> =&gt; <span class="keyword">false</span> ) );</div></pre></td></tr></table></figure></p>
+<p>获取文章但不更新 meta 信息的缓存<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="keyword">array</span>( <span class="string">'posts_per_page'</span> =&gt; <span class="number">50</span>, <span class="string">'update_post_meta_cache'</span> =&gt; <span class="keyword">false</span> ) );</div></pre></td></tr></table></figure></p>
+<p>获取文章但不更新文章分类法的缓存<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$query = <span class="keyword">new</span> WP_Query( <span class="keyword">array</span>( <span class="string">'posts_per_page'</span> =&gt; <span class="number">50</span>, <span class="string">'update_post_term_cache'</span> =&gt; <span class="keyword">false</span> ) );</div></pre></td></tr></table></figure></p>
+<h2 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h2><p>参考资料：<a href="https://codex.wordpress.org/Class_Reference/WP_Query" target="_blank" rel="external">https://codex.wordpress.org/Class_Reference/WP_Query</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Wordpress/" rel="tag"># Wordpress</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/30/install-mycat/" rel="next" title="安装与配置mycat">
+                <i class="fa fa-chevron-left"></i> 安装与配置mycat
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="zxf" />
+          <p class="site-author-name" itemprop="name">zxf</p>
+           
+              <p class="site-description motion-element" itemprop="description">talk nonsense</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#wp-query用法"><span class="nav-number">1.</span> <span class="nav-text">wp-query用法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#作者"><span class="nav-number">1.1.</span> <span class="nav-text">作者</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#获取一个作者的文章"><span class="nav-number">1.1.1.</span> <span class="nav-text">获取一个作者的文章</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取多个作者的文章"><span class="nav-number">1.1.2.</span> <span class="nav-text">获取多个作者的文章</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#排除作者的文章"><span class="nav-number">1.1.3.</span> <span class="nav-text">排除作者的文章</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多作者查询"><span class="nav-number">1.1.4.</span> <span class="nav-text">多作者查询</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分类"><span class="nav-number">1.2.</span> <span class="nav-text">分类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#获取一个分类的文章"><span class="nav-number">1.2.1.</span> <span class="nav-text">获取一个分类的文章</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取多个分类的文章"><span class="nav-number">1.2.2.</span> <span class="nav-text">获取多个分类的文章</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#排除分类"><span class="nav-number">1.2.3.</span> <span class="nav-text">排除分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多分类查询"><span class="nav-number">1.2.4.</span> <span class="nav-text">多分类查询</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标签"><span class="nav-number">1.3.</span> <span class="nav-text">标签</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#获取一个标签的文章"><span class="nav-number">1.3.1.</span> <span class="nav-text">获取一个标签的文章</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取多个标签的文章"><span class="nav-number">1.3.2.</span> <span class="nav-text">获取多个标签的文章</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多标签查询"><span class="nav-number">1.3.3.</span> <span class="nav-text">多标签查询</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义分类法"><span class="nav-number">1.4.</span> <span class="nav-text">自定义分类法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#简单的分类法查询"><span class="nav-number">1.4.1.</span> <span class="nav-text">简单的分类法查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多分类法查询"><span class="nav-number">1.4.2.</span> <span class="nav-text">多分类法查询</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#搜索"><span class="nav-number">1.5.</span> <span class="nav-text">搜索</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#搜索关键词"><span class="nav-number">1.5.1.</span> <span class="nav-text">搜索关键词</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文章和页面"><span class="nav-number">1.6.</span> <span class="nav-text">文章和页面</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#根据-ID-获取文章或页面"><span class="nav-number">1.6.1.</span> <span class="nav-text">根据 ID 获取文章或页面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#根据别名获取文章或页面"><span class="nav-number">1.6.2.</span> <span class="nav-text">根据别名获取文章或页面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取文章或页面的子项目"><span class="nav-number">1.6.3.</span> <span class="nav-text">获取文章或页面的子项目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多文章和页面查询"><span class="nav-number">1.6.4.</span> <span class="nav-text">多文章和页面查询</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#密码"><span class="nav-number">1.7.</span> <span class="nav-text">密码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#有无密码"><span class="nav-number">1.7.1.</span> <span class="nav-text">有无密码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#指定密码"><span class="nav-number">1.7.2.</span> <span class="nav-text">指定密码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类型"><span class="nav-number">1.8.</span> <span class="nav-text">类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#多个文章类型"><span class="nav-number">1.8.1.</span> <span class="nav-text">多个文章类型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#状态"><span class="nav-number">1.9.</span> <span class="nav-text">状态</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#获取一个状态的文章"><span class="nav-number">1.9.1.</span> <span class="nav-text">获取一个状态的文章</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取多个状态的文章"><span class="nav-number">1.9.2.</span> <span class="nav-text">获取多个状态的文章</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分页"><span class="nav-number">1.10.</span> <span class="nav-text">分页</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#设置每页文章数"><span class="nav-number">1.10.1.</span> <span class="nav-text">设置每页文章数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#显示全部文章"><span class="nav-number">1.10.2.</span> <span class="nav-text">显示全部文章</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#偏移"><span class="nav-number">1.10.3.</span> <span class="nav-text">偏移</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取第-N-页文章"><span class="nav-number">1.10.4.</span> <span class="nav-text">获取第 N 页文章</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取当前页文章"><span class="nav-number">1.10.5.</span> <span class="nav-text">获取当前页文章</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#置顶文章"><span class="nav-number">1.10.6.</span> <span class="nav-text">置顶文章</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#排除置顶文章"><span class="nav-number">1.10.7.</span> <span class="nav-text">排除置顶文章</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#排序和排序类型"><span class="nav-number">1.11.</span> <span class="nav-text">排序和排序类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#按标题倒序"><span class="nav-number">1.11.1.</span> <span class="nav-text">按标题倒序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#随机排序"><span class="nav-number">1.11.2.</span> <span class="nav-text">随机排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#热门文章"><span class="nav-number">1.11.3.</span> <span class="nav-text">热门文章</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多条件不同排序"><span class="nav-number">1.11.4.</span> <span class="nav-text">多条件不同排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义字段"><span class="nav-number">1.11.5.</span> <span class="nav-text">自定义字段</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#日期"><span class="nav-number">1.12.</span> <span class="nav-text">日期</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义字段-1"><span class="nav-number">1.13.</span> <span class="nav-text">自定义字段</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#简单的自定义字段查询"><span class="nav-number">1.13.1.</span> <span class="nav-text">简单的自定义字段查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#简单的复杂查询"><span class="nav-number">1.13.2.</span> <span class="nav-text">简单的复杂查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#复杂的查询"><span class="nav-number">1.13.3.</span> <span class="nav-text">复杂的查询</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用户权限"><span class="nav-number">1.14.</span> <span class="nav-text">用户权限</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#只有用户有权限才显示文章"><span class="nav-number">1.14.1.</span> <span class="nav-text">只有用户有权限才显示文章</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文章缓存"><span class="nav-number">1.15.</span> <span class="nav-text">文章缓存</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其它"><span class="nav-number">1.16.</span> <span class="nav-text">其它</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zxf</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
