@@ -38,7 +38,7 @@
 
 /* 定义blink类*/
 .blink{
-    animation: blink 1s linear infinite;
+    animation: blink 1.2s linear infinite;
     /* 其它浏览器兼容性前缀 */
     -webkit-animation: blink 1.2s linear infinite;
     -moz-animation: blink 1.2s linear infinite;
