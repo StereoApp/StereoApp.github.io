@@ -100,7 +100,7 @@
 <meta property="og:url" content="https://stereoapp.github.io/2017/07/28/laravel-voyager-introduce/index.html">
 <meta property="og:site_name" content="zxf.log">
 <meta property="og:description" content="在平常的开发中，无论是工作上还是自己想搞点有趣的东西的时候，经常遇到需要开发一个后台数据维护系统用来给前台应用提供数据，这时候我们可能会想到内容管理系统。可是仅仅从维护数据的角度需求来看，大部分内容管理系统的功能都过于复杂，而且二次开发起来费时费力，其实我们只不过是要一个增删改查而已，要是不用写代码就更好了，下面介绍的Voyager或许可以正好满足这种需求。 Voyager简介github htt">
-<meta property="og:updated_time" content="2017-07-28T07:57:29.000Z">
+<meta property="og:updated_time" content="2017-07-28T09:05:03.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Laravel后台管理扩展包——Voyager简介（一）">
 <meta name="twitter:description" content="在平常的开发中，无论是工作上还是自己想搞点有趣的东西的时候，经常遇到需要开发一个后台数据维护系统用来给前台应用提供数据，这时候我们可能会想到内容管理系统。可是仅仅从维护数据的角度需求来看，大部分内容管理系统的功能都过于复杂，而且二次开发起来费时费力，其实我们只不过是要一个增删改查而已，要是不用写代码就更好了，下面介绍的Voyager或许可以正好满足这种需求。 Voyager简介github htt">
@@ -336,7 +336,8 @@
 <p>如下：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="string">'providers'</span> =&gt; [</div><div class="line">    <span class="comment">// Laravel Framework Service Providers...</span></div><div class="line">    <span class="comment">//...</span></div><div class="line"></div><div class="line">    <span class="comment">// Package Service Providers</span></div><div class="line">    TCG\Voyager\VoyagerServiceProvider::class,</div><div class="line">    <span class="comment">// ...</span></div><div class="line"></div><div class="line">    <span class="comment">// Application Service Providers</span></div><div class="line">    <span class="comment">// ...</span></div><div class="line">],</div></pre></td></tr></table></figure></p>
 <h2 id="install-voyager"><a href="#install-voyager" class="headerlink" title="install voyager"></a>install voyager</h2><p>最后使用Laravel的artisan工具安装voyager，主要就是一些数据库的导入和资源文件的编译等，命令如下（mysql 5.7.7以下的版本先看下方的低版本注意）:</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan voyager:install --with-dummy</div></pre></td></tr></table></figure>
-<p><code>--with-dummy</code>会添加一些测试数据用来尝试各项功能，如果不需要则去掉该选项，执行完毕后，至此安装完成，启动http服务后，如果服务在本地的话直接访问你的localhost就行了，或者干脆使用，php只带的http服务器，在项目目录下使用<code>php artisan serve</code>就行了，注意下端口号，如果有端口号别忘了改下<code>.env</code>文件的<code>APP_URL</code>为正确的访问地址，不然资源文件会无法访问，下面说一下几个需要我们优化的部分和一些主要的功能及自定义开发的一些详情。</p>
+<p><code>--with-dummy</code>会添加一些测试数据用来尝试各项功能，如果不需要则去掉该选项，执行完毕后，至此安装完成，启动http服务后，如果服务在本地的话直接访问你的<code>localhost/admin</code>就行了，或者干脆使用php自带的http服务器，在项目目录下使用<code>php artisan serve</code>就行了，注意下端口号，如果有端口号别忘了改下<code>.env</code>文件的<code>APP_URL</code>为正确的访问地址，不然资源文件会无法访问。<br>默认创建的管理员账户为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">email: admin@admin.com</div><div class="line">password: password</div></pre></td></tr></table></figure></p>
+<p>下面说一下几个需要我们优化的部分和一些主要的功能及自定义开发的一些详情。</p>
 <h2 id="低版本mysql注意"><a href="#低版本mysql注意" class="headerlink" title="低版本mysql注意"></a>低版本mysql注意</h2><p>mysql 5.7.7之前的版本会提示一些错误，无法安装，下面是laravel官方给出的说明。</p>
 <blockquote>
 <p><a href="https://laravel-news.com/laravel-5-4-key-too-long-error" target="_blank" rel="external">https://laravel-news.com/laravel-5-4-key-too-long-error</a></p>
@@ -411,6 +412,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2017/07/28/laravel-voyager-introduce-2/" rel="prev" title="Laravel后台管理扩展包——Voyager简介（二）">
+                Laravel后台管理扩展包——Voyager简介（二） <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -481,7 +486,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-count">6</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
