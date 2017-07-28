@@ -100,7 +100,7 @@
 <meta property="og:url" content="https://stereoapp.github.io/2017/07/28/laravel-voyager-introduce-2/index.html">
 <meta property="og:site_name" content="zxf.log">
 <meta property="og:description" content="数据BREAD简介数据BREAD应当算是最主要与核心的功能，这个模块的其他功能也都是主要围绕此功能，我们应该对CURD这个词很熟悉，增删改查谁都知道，其实Voyager说指的BREAD是一样的，多了一个browse，浏览，可以理解为我们常接触的数据列表，当我们在Admin系统中想管理一类数据，我们通常会建立一张数据表，有了数据表的增删改查浏览功能，维护数据这个需求就实现了，Voyager做的就是快">
-<meta property="og:updated_time" content="2017-07-28T09:25:03.000Z">
+<meta property="og:updated_time" content="2017-07-28T09:34:56.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Laravel后台管理扩展包——Voyager简介（二）">
 <meta name="twitter:description" content="数据BREAD简介数据BREAD应当算是最主要与核心的功能，这个模块的其他功能也都是主要围绕此功能，我们应该对CURD这个词很熟悉，增删改查谁都知道，其实Voyager说指的BREAD是一样的，多了一个browse，浏览，可以理解为我们常接触的数据列表，当我们在Admin系统中想管理一类数据，我们通常会建立一张数据表，有了数据表的增删改查浏览功能，维护数据这个需求就实现了，Voyager做的就是快">
@@ -330,6 +330,7 @@
 <h2 id="访问BREAD"><a href="#访问BREAD" class="headerlink" title="访问BREAD"></a>访问BREAD</h2><p>建立完BREAD，我们进入角色菜单，我们登陆的用的属于admin角色，编辑该角色的权限，勾选我们才创建BREAD时生成的权限，然后访问<code>localhost/admin/创建BREAD时填写的URL别名（URL slug）</code>，这个url就是该数据表的BREAD页面，列表、分页、增删改查、字段输入类型、表单验证就都已经完成了，没有写任何源代码，非常方便，根据业务需要我们就这样依次的建立业务表就可以了。</p>
 <h1 id="菜单构建"><a href="#菜单构建" class="headerlink" title="菜单构建"></a>菜单构建</h1><p>有了各个数据表的管理页面，我们还需要的就是分门别类的将它们组织起来，此时就可以使用菜单构建功能了，在工具中找到菜单构建，其中定义了一个名为admin的菜单，点击编辑，你会发现这就是我们当前正在使用的菜单，所以，其实admin用户的菜单就是用自己的菜单构建功能做的，为了能马上看到效果，我们就把我们在前面创建的BREAD页面添加到这个菜单里，编辑admin菜单，添加一个菜单项，填写相关名字等信息，选择静态路由，路由地址就填写刚才新建的BREAD的地址，比如<code>/admin/computers</code>,保存后，刷新，我们就看到新创建的菜单了。</p>
 <h1 id="权限管理"><a href="#权限管理" class="headerlink" title="权限管理"></a>权限管理</h1><p>Voyager的权限管理是基于表的BREAD的，当一个用户需要管理一张表时，只需将该表的BREAD权限授予该用户所在的角色即可，这部分比较简单，容易理解，不再多说了。</p>
+<h1 id="设置功能"><a href="#设置功能" class="headerlink" title="设置功能"></a>设置功能</h1><p>Voyager提供了一个设置（setting）功能，用过wordpress的这个其实和option表是一样的，存储各类静态的设置在数据库中，这样一些静态的设置要比写在配置文件中方便，一些设置可以开放给用户，设置中定义的设置项的值可以在代码中随时通过<code>Voyager::setting(&#39;key&#39;)</code>来取得。</p>
 
       
     </div>
@@ -504,7 +505,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#数据BREAD"><span class="nav-number">1.</span> <span class="nav-text">数据BREAD</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建数据库"><span class="nav-number">1.2.</span> <span class="nav-text">创建数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定义BREAD"><span class="nav-number">1.3.</span> <span class="nav-text">定义BREAD</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#访问BREAD"><span class="nav-number">1.4.</span> <span class="nav-text">访问BREAD</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#菜单构建"><span class="nav-number">2.</span> <span class="nav-text">菜单构建</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#权限管理"><span class="nav-number">3.</span> <span class="nav-text">权限管理</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#数据BREAD"><span class="nav-number">1.</span> <span class="nav-text">数据BREAD</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建数据库"><span class="nav-number">1.2.</span> <span class="nav-text">创建数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定义BREAD"><span class="nav-number">1.3.</span> <span class="nav-text">定义BREAD</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#访问BREAD"><span class="nav-number">1.4.</span> <span class="nav-text">访问BREAD</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#菜单构建"><span class="nav-number">2.</span> <span class="nav-text">菜单构建</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#权限管理"><span class="nav-number">3.</span> <span class="nav-text">权限管理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#设置功能"><span class="nav-number">4.</span> <span class="nav-text">设置功能</span></a></li></ol></div>
             
 
           </div>
