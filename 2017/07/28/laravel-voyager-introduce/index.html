@@ -1,0 +1,717 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="PHP,Laravel,Voyager," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="在平常的开发中，无论是工作上还是自己想搞点有趣的东西的时候，经常遇到需要开发一个后台数据维护系统用来给前台应用提供数据，这时候我们可能会想到内容管理系统。可是仅仅从维护数据的角度需求来看，大部分内容管理系统的功能都过于复杂，而且二次开发起来费时费力，其实我们只不过是要一个增删改查而已，要是不用写代码就更好了，下面介绍的Voyager或许可以正好满足这种需求。 Voyager简介github htt">
+<meta name="keywords" content="PHP,Laravel,Voyager">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Laravel后台管理扩展包——Voyager简介（一）">
+<meta property="og:url" content="https://stereoapp.github.io/2017/07/28/laravel-voyager-introduce/index.html">
+<meta property="og:site_name" content="zxf.log">
+<meta property="og:description" content="在平常的开发中，无论是工作上还是自己想搞点有趣的东西的时候，经常遇到需要开发一个后台数据维护系统用来给前台应用提供数据，这时候我们可能会想到内容管理系统。可是仅仅从维护数据的角度需求来看，大部分内容管理系统的功能都过于复杂，而且二次开发起来费时费力，其实我们只不过是要一个增删改查而已，要是不用写代码就更好了，下面介绍的Voyager或许可以正好满足这种需求。 Voyager简介github htt">
+<meta property="og:updated_time" content="2017-07-28T07:57:29.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Laravel后台管理扩展包——Voyager简介（一）">
+<meta name="twitter:description" content="在平常的开发中，无论是工作上还是自己想搞点有趣的东西的时候，经常遇到需要开发一个后台数据维护系统用来给前台应用提供数据，这时候我们可能会想到内容管理系统。可是仅仅从维护数据的角度需求来看，大部分内容管理系统的功能都过于复杂，而且二次开发起来费时费力，其实我们只不过是要一个增删改查而已，要是不用写代码就更好了，下面介绍的Voyager或许可以正好满足这种需求。 Voyager简介github htt">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://stereoapp.github.io/2017/07/28/laravel-voyager-introduce/"/>
+
+
+
+
+
+  <title>Laravel后台管理扩展包——Voyager简介（一） | zxf.log</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">zxf.log</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">$ tail -f zxf.log</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://stereoapp.github.io/2017/07/28/laravel-voyager-introduce/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="zxf">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="zxf.log">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Laravel后台管理扩展包——Voyager简介（一）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-28T13:38:13+08:00">
+                2017-07-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在平常的开发中，无论是工作上还是自己想搞点有趣的东西的时候，经常遇到需要开发一个后台数据维护系统用来给前台应用提供数据，这时候我们可能会想到内容管理系统。可是仅仅从维护数据的角度需求来看，大部分内容管理系统的功能都过于复杂，而且二次开发起来费时费力，其实我们只不过是要一个增删改查而已，要是不用写代码就更好了，下面介绍的Voyager或许可以正好满足这种需求。</p>
+<h1 id="Voyager简介"><a href="#Voyager简介" class="headerlink" title="Voyager简介"></a>Voyager简介</h1><h2 id="github"><a href="#github" class="headerlink" title="github"></a>github</h2><blockquote>
+<p><a href="https://github.com/the-control-group/voyager" target="_blank" rel="external">https://github.com/the-control-group/voyager</a></p>
+</blockquote>
+<p>Voyager是一个依赖于Laravel框架的开箱即用的后台管理Package，包含了数据库BREAD(CRUD)，媒体管理，菜单构建，权限管理等系列功能，对我来说最吸引我使用的特性是它不像一个CMS系统那么冗杂，用来做一个后台管理十分快捷方便，当然此类专用于Admin快速搭建的开源框架可以说一直就很常见，但是在写这篇文章时，Voyager 1.0正式版还未发布，在github上已经收获了3600多star，说明其却有过人之处，使用几天下来体验也的确不错。<br><a id="more"></a></p>
+<h1 id="Voyager安装"><a href="#Voyager安装" class="headerlink" title="Voyager安装"></a>Voyager安装</h1><p>Voyager因为是依赖于Laravel的，所以前提是装好Laravel以及Composer，这个不在多说了，我们从创建一个新的project说起吧。</p>
+<h2 id="创建laravel-project"><a href="#创建laravel-project" class="headerlink" title="创建laravel project"></a>创建laravel project</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cd your_project_location</div><div class="line">laravel new voyager-demmo</div></pre></td></tr></table></figure>
+<h2 id="用Composer引入voyager"><a href="#用Composer引入voyager" class="headerlink" title="用Composer引入voyager"></a>用Composer引入voyager</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cd voyager-demmo</div><div class="line">composer require tcg/voyager</div></pre></td></tr></table></figure>
+<p>这里说一下，因为在写这篇blog时候，voyager 1.0 正式版还未发布，voyager 1.0带来了一些新的特性，其中对我最重要的就是支持多语言，不用在源代码中翻译了，不然实在是一件很头疼的事情，所以我实际composer使用的下面这个命令。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">composer require tcg/voyager:dev-v1.0-pre-release</div></pre></td></tr></table></figure>
+<p>先使用了pre release版，bug还是有一些的，但本身代码不复杂，可以自己尝试修复，或者在github issue中找找答案，待1.0发布后就直接使用正式版就可以了，bug会少一点。</p>
+<h2 id="配置数据库"><a href="#配置数据库" class="headerlink" title="配置数据库"></a>配置数据库</h2><p>composer完成后，先配置laravel的数据库连接，也就是laravel的.env文件，修改数据库部分，使应用可以正常连接mysql。</p>
+<h2 id="添加provider"><a href="#添加provider" class="headerlink" title="添加provider"></a>添加provider</h2><p>配置文件添加voyager的provider，打开<code>config/app.php</code>，在<code>providers</code>数组中添加<code>TCG\Voyager\VoyagerServiceProvider::class,</code></p>
+<p>如下：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="string">'providers'</span> =&gt; [</div><div class="line">    <span class="comment">// Laravel Framework Service Providers...</span></div><div class="line">    <span class="comment">//...</span></div><div class="line"></div><div class="line">    <span class="comment">// Package Service Providers</span></div><div class="line">    TCG\Voyager\VoyagerServiceProvider::class,</div><div class="line">    <span class="comment">// ...</span></div><div class="line"></div><div class="line">    <span class="comment">// Application Service Providers</span></div><div class="line">    <span class="comment">// ...</span></div><div class="line">],</div></pre></td></tr></table></figure></p>
+<h2 id="install-voyager"><a href="#install-voyager" class="headerlink" title="install voyager"></a>install voyager</h2><p>最后使用Laravel的artisan工具安装voyager，主要就是一些数据库的导入和资源文件的编译等，命令如下（mysql 5.7.7以下的版本先看下方的低版本注意）:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">php artisan voyager:install --with-dummy</div></pre></td></tr></table></figure>
+<p><code>--with-dummy</code>会添加一些测试数据用来尝试各项功能，如果不需要则去掉该选项，执行完毕后，至此安装完成，启动http服务后，如果服务在本地的话直接访问你的localhost就行了，或者干脆使用，php只带的http服务器，在项目目录下使用<code>php artisan serve</code>就行了，注意下端口号，如果有端口号别忘了改下<code>.env</code>文件的<code>APP_URL</code>为正确的访问地址，不然资源文件会无法访问，下面说一下几个需要我们优化的部分和一些主要的功能及自定义开发的一些详情。</p>
+<h2 id="低版本mysql注意"><a href="#低版本mysql注意" class="headerlink" title="低版本mysql注意"></a>低版本mysql注意</h2><p>mysql 5.7.7之前的版本会提示一些错误，无法安装，下面是laravel官方给出的说明。</p>
+<blockquote>
+<p><a href="https://laravel-news.com/laravel-5-4-key-too-long-error" target="_blank" rel="external">https://laravel-news.com/laravel-5-4-key-too-long-error</a></p>
+<p>Laravel 5.4: Specified key was too long error<br>Laravel 5.4 made a change to the default database character set, and it’s now utf8mb4 which includes support for storing emojis. This only affects new applications and as long as you are running MySQL v5.7.7 and higher you do not need to do anything.</p>
+<p>For those running MariaDB or older versions of MySQL you may hit this error when trying to run migrations:</p>
+<blockquote>
+<p>[Illuminate\Database\QueryException]<br>SQLSTATE[42000]: Syntax error or access violation: 1071 Specified key was too long; max key length is 767 bytes (SQL: alter table users add unique users_email_unique(email))<br><br>[PDOException]<br>SQLSTATE[42000]: Syntax error or access violation: 1071 Specified key was too long; max key length is 767 bytes<br>As outlined in the Migrations guide to fix this all you have to do is edit your AppServiceProvider.php file and inside the boot method set a default string length:<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">use</span> <span class="title">Illuminate</span>\<span class="title">Support</span>\<span class="title">Facades</span>\<span class="title">Schema</span>;</div><div class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">boot</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">    Schema::defaultStringLength(<span class="number">191</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+</blockquote>
+<p>After that everything should work as normal.</p>
+</blockquote>
+<p>简单来说就是是5.4版本的 Laravel 将 mysql 默认字符编码换成了utf8mb4用来支持emoji之类的字符，老版本的mysql会提示字符长度错误，所以需要添加一个默认方法来修正这个问题，高版本数据库则什么都不用做。</p>
+<p>找到<code>app/Providers/AppServiceProvider.php</code><br>先<code>use</code>下<code>Illuminate\Support\Facades\Schema</code><br><code>boot()</code>中添加一个<code>Schema::defaultStringLength(191);</code>方法。</p>
+<h1 id="系统翻译"><a href="#系统翻译" class="headerlink" title="系统翻译"></a>系统翻译</h1><p>系统如果自己使用还好，要是给别人用，中文UI肯定是必须的，v1.0提供了多语言功能，可惜预置的本地化文件中并没有包含中文语言文件，所以这个我们需要自己翻译下，量不大也没什么难度，大家都可以轻松搞定，我会把我翻译的语言文件粘在文章最后，时间匆忙，简单粗略的翻译下，肯定有词不达意和错误的地方，但可以参考下，下面主要说一下如何使用语言文件。</p>
+<h2 id="创建语言文件"><a href="#创建语言文件" class="headerlink" title="创建语言文件"></a>创建语言文件</h2><p>首先在<code>resources/lang/</code>下面建立一个名为<code>zh_cn</code>的文件夹，然后将<code>vendor/tcg/voyager/publishable/lang/en</code>中的<code>voyager.php</code>文件拷贝到刚才建立的<code>zh-cn</code>文件夹，然后翻译这个<code>zh-cn/voyager.php</code>文件就行了，该文件中为一个数组，描述着翻译的对应关系，我们把其中的英文键值全部翻译为中文就行了。</p>
+<h2 id="配置系统locate"><a href="#配置系统locate" class="headerlink" title="配置系统locate"></a>配置系统locate</h2><p>打开<code>config/app.php</code>，修改<code>locale</code>的值为<code>zh_cn</code>,<code>fallback_locale</code>的值为<code>en</code>，这样支持多语言的模块会首先去<code>lang/zh_cn</code>找文件，找不到会去<code>lang/en</code>下找。</p>
+<p>至此基本系统就可以使用了，啰啰嗦嗦码了这么多字，后面的内容分到下一篇文章吧，而且也正在使用这个系统进行开发，索性吧后续遇到的问题都归纳到这系列文章里面吧。</p>
+<h2 id="我的翻译（zh-cn-voyager-php）"><a href="#我的翻译（zh-cn-voyager-php）" class="headerlink" title="我的翻译（zh-cn/voyager.php）"></a>我的翻译（<code>zh-cn/voyager.php</code>）</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div><div class="line">203</div><div class="line">204</div><div class="line">205</div><div class="line">206</div><div class="line">207</div><div class="line">208</div><div class="line">209</div><div class="line">210</div><div class="line">211</div><div class="line">212</div><div class="line">213</div><div class="line">214</div><div class="line">215</div><div class="line">216</div><div class="line">217</div><div class="line">218</div><div class="line">219</div><div class="line">220</div><div class="line">221</div><div class="line">222</div><div class="line">223</div><div class="line">224</div><div class="line">225</div><div class="line">226</div><div class="line">227</div><div class="line">228</div><div class="line">229</div><div class="line">230</div><div class="line">231</div><div class="line">232</div><div class="line">233</div><div class="line">234</div><div class="line">235</div><div class="line">236</div><div class="line">237</div><div class="line">238</div><div class="line">239</div><div class="line">240</div><div class="line">241</div><div class="line">242</div><div class="line">243</div><div class="line">244</div><div class="line">245</div><div class="line">246</div><div class="line">247</div><div class="line">248</div><div class="line">249</div><div class="line">250</div><div class="line">251</div><div class="line">252</div><div class="line">253</div><div class="line">254</div><div class="line">255</div><div class="line">256</div><div class="line">257</div><div class="line">258</div><div class="line">259</div><div class="line">260</div><div class="line">261</div><div class="line">262</div><div class="line">263</div><div class="line">264</div><div class="line">265</div><div class="line">266</div><div class="line">267</div><div class="line">268</div><div class="line">269</div><div class="line">270</div><div class="line">271</div><div class="line">272</div><div class="line">273</div><div class="line">274</div><div class="line">275</div><div class="line">276</div><div class="line">277</div><div class="line">278</div><div class="line">279</div><div class="line">280</div><div class="line">281</div><div class="line">282</div><div class="line">283</div><div class="line">284</div><div class="line">285</div><div class="line">286</div><div class="line">287</div><div class="line">288</div><div class="line">289</div><div class="line">290</div><div class="line">291</div><div class="line">292</div><div class="line">293</div><div class="line">294</div><div class="line">295</div><div class="line">296</div><div class="line">297</div><div class="line">298</div><div class="line">299</div><div class="line">300</div><div class="line">301</div><div class="line">302</div><div class="line">303</div><div class="line">304</div><div class="line">305</div><div class="line">306</div><div class="line">307</div><div class="line">308</div><div class="line">309</div><div class="line">310</div><div class="line">311</div><div class="line">312</div><div class="line">313</div><div class="line">314</div><div class="line">315</div><div class="line">316</div><div class="line">317</div><div class="line">318</div><div class="line">319</div><div class="line">320</div><div class="line">321</div><div class="line">322</div><div class="line">323</div><div class="line">324</div><div class="line">325</div><div class="line">326</div><div class="line">327</div><div class="line">328</div><div class="line">329</div><div class="line">330</div><div class="line">331</div><div class="line">332</div><div class="line">333</div><div class="line">334</div><div class="line">335</div><div class="line">336</div><div class="line">337</div><div class="line">338</div><div class="line">339</div><div class="line">340</div><div class="line">341</div><div class="line">342</div><div class="line">343</div><div class="line">344</div><div class="line">345</div><div class="line">346</div><div class="line">347</div><div class="line">348</div><div class="line">349</div><div class="line">350</div><div class="line">351</div><div class="line">352</div><div class="line">353</div><div class="line">354</div><div class="line">355</div><div class="line">356</div><div class="line">357</div><div class="line">358</div><div class="line">359</div><div class="line">360</div><div class="line">361</div><div class="line">362</div><div class="line">363</div><div class="line">364</div><div class="line">365</div><div class="line">366</div><div class="line">367</div><div class="line">368</div><div class="line">369</div><div class="line">370</div><div class="line">371</div><div class="line">372</div><div class="line">373</div><div class="line">374</div><div class="line">375</div><div class="line">376</div><div class="line">377</div><div class="line">378</div><div class="line">379</div><div class="line">380</div><div class="line">381</div><div class="line">382</div><div class="line">383</div><div class="line">384</div><div class="line">385</div><div class="line">386</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;?php</span></div><div class="line"></div><div class="line"><span class="keyword">return</span> [</div><div class="line">	<span class="string">'date'</span> =&gt; [</div><div class="line">		<span class="string">'last_week'</span> =&gt; <span class="string">'上周'</span>,</div><div class="line">		<span class="string">'last_year'</span> =&gt; <span class="string">'去年'</span>,</div><div class="line">		<span class="string">'this_week'</span> =&gt; <span class="string">'本周'</span>,</div><div class="line">		<span class="string">'this_year'</span> =&gt; <span class="string">'本年'</span>,</div><div class="line">	],</div><div class="line"></div><div class="line">	<span class="string">'generic'</span> =&gt; [</div><div class="line">		<span class="string">'action'</span>                 =&gt; <span class="string">'操作'</span>,</div><div class="line">		<span class="string">'actions'</span>                =&gt; <span class="string">'操作'</span>,</div><div class="line">		<span class="string">'add'</span>                    =&gt; <span class="string">'新建'</span>,</div><div class="line">		<span class="string">'add_folder'</span>             =&gt; <span class="string">'新建目录'</span>,</div><div class="line">		<span class="string">'add_new'</span>                =&gt; <span class="string">'添加'</span>,</div><div class="line">		<span class="string">'all_done'</span>               =&gt; <span class="string">'全部完成'</span>,</div><div class="line">		<span class="string">'are_you_sure'</span>           =&gt; <span class="string">'请确认'</span>,</div><div class="line">		<span class="string">'are_you_sure_delete'</span>    =&gt; <span class="string">'确认删除'</span>,</div><div class="line">		<span class="string">'auto_increment'</span>         =&gt; <span class="string">'自动增长'</span>,</div><div class="line">		<span class="string">'browse'</span>                 =&gt; <span class="string">'浏览'</span>,</div><div class="line">		<span class="string">'builder'</span>                =&gt; <span class="string">'构建'</span>,</div><div class="line">		<span class="string">'cancel'</span>                 =&gt; <span class="string">'取消'</span>,</div><div class="line">		<span class="string">'choose_type'</span>            =&gt; <span class="string">'选择类型'</span>,</div><div class="line">		<span class="string">'click_here'</span>             =&gt; <span class="string">'点击'</span>,</div><div class="line">		<span class="string">'close'</span>                  =&gt; <span class="string">'关闭'</span>,</div><div class="line">		<span class="string">'created_at'</span>             =&gt; <span class="string">'创建时间'</span>,</div><div class="line">		<span class="string">'custom'</span>                 =&gt; <span class="string">'自定义'</span>,</div><div class="line">		<span class="string">'dashboard'</span>              =&gt; <span class="string">'控制台'</span>,</div><div class="line">		<span class="string">'database'</span>               =&gt; <span class="string">'数据库'</span>,</div><div class="line">		<span class="string">'default'</span>                =&gt; <span class="string">'默认'</span>,</div><div class="line">		<span class="string">'delete'</span>                 =&gt; <span class="string">'删除'</span>,</div><div class="line">		<span class="string">'delete_confirm'</span>         =&gt; <span class="string">'删除'</span>,</div><div class="line">		<span class="string">'delete_question'</span>        =&gt; <span class="string">'确认删除'</span>,</div><div class="line">		<span class="string">'delete_this_confirm'</span>    =&gt; <span class="string">'删除'</span>,</div><div class="line">		<span class="string">'deselect_all'</span>           =&gt; <span class="string">'全不选'</span>,</div><div class="line">		<span class="string">'download'</span>               =&gt; <span class="string">'下载'</span>,</div><div class="line">		<span class="string">'edit'</span>                   =&gt; <span class="string">'编辑'</span>,</div><div class="line">		<span class="string">'email'</span>                  =&gt; <span class="string">'邮箱'</span>,</div><div class="line">		<span class="string">'error_deleting'</span>         =&gt; <span class="string">'抱歉，在删除过程中出现问题'</span>,</div><div class="line">		<span class="string">'exception'</span>              =&gt; <span class="string">'异常'</span>,</div><div class="line">		<span class="string">'featured'</span>               =&gt; <span class="string">'特色'</span>,</div><div class="line">		<span class="string">'field_does_not_exist'</span>   =&gt; <span class="string">'字段不存在'</span>,</div><div class="line">		<span class="string">'how_to_use'</span>             =&gt; <span class="string">'如何使用'</span>,</div><div class="line">		<span class="string">'index'</span>                  =&gt; <span class="string">'索引'</span>,</div><div class="line">		<span class="string">'internal_error'</span>         =&gt; <span class="string">'网络错误'</span>,</div><div class="line">		<span class="string">'items'</span>                  =&gt; <span class="string">'条目'</span>,</div><div class="line">		<span class="string">'keep_sidebar_open'</span>      =&gt; <span class="string">'保持右侧菜单打开'</span>,</div><div class="line">		<span class="string">'key'</span>                    =&gt; <span class="string">'Key'</span>,</div><div class="line">		<span class="string">'last_modified'</span>          =&gt; <span class="string">'最后更新'</span>,</div><div class="line">		<span class="string">'length'</span>                 =&gt; <span class="string">'长度'</span>,</div><div class="line">		<span class="string">'login'</span>                  =&gt; <span class="string">'登陆'</span>,</div><div class="line">		<span class="string">'media'</span>                  =&gt; <span class="string">'媒体'</span>,</div><div class="line">		<span class="string">'menu_builder'</span>           =&gt; <span class="string">'菜单构建'</span>,</div><div class="line">		<span class="string">'move'</span>                   =&gt; <span class="string">'移动'</span>,</div><div class="line">		<span class="string">'name'</span>                   =&gt; <span class="string">'名称'</span>,</div><div class="line">		<span class="string">'new'</span>                    =&gt; <span class="string">'新建'</span>,</div><div class="line">		<span class="string">'no'</span>                     =&gt; <span class="string">'否'</span>,</div><div class="line">		<span class="string">'no_thanks'</span>              =&gt; <span class="string">'不 谢谢'</span>,</div><div class="line">		<span class="string">'not_null'</span>               =&gt; <span class="string">'不为空'</span>,</div><div class="line">		<span class="string">'options'</span>                =&gt; <span class="string">'选项'</span>,</div><div class="line">		<span class="string">'password'</span>               =&gt; <span class="string">'密码'</span>,</div><div class="line">		<span class="string">'permissions'</span>            =&gt; <span class="string">'权限'</span>,</div><div class="line">		<span class="string">'profile'</span>                =&gt; <span class="string">'资料'</span>,</div><div class="line">		<span class="string">'public_url'</span>             =&gt; <span class="string">'公共 URL'</span>,</div><div class="line">		<span class="string">'read'</span>                   =&gt; <span class="string">'读取'</span>,</div><div class="line">		<span class="string">'rename'</span>                 =&gt; <span class="string">'重命名'</span>,</div><div class="line">		<span class="string">'required'</span>               =&gt; <span class="string">'必填'</span>,</div><div class="line">		<span class="string">'return_to_list'</span>         =&gt; <span class="string">'返回列表'</span>,</div><div class="line">		<span class="string">'route'</span>                  =&gt; <span class="string">'路由'</span>,</div><div class="line">		<span class="string">'save'</span>                   =&gt; <span class="string">'保存'</span>,</div><div class="line">		<span class="string">'search'</span>                 =&gt; <span class="string">'搜索'</span>,</div><div class="line">		<span class="string">'select_all'</span>             =&gt; <span class="string">'全选'</span>,</div><div class="line">		<span class="string">'settings'</span>               =&gt; <span class="string">'设置'</span>,</div><div class="line">		<span class="string">'showing_entries'</span>        =&gt; <span class="string">'Showing :from to :to of :all entrie|Showing :from to :to of :all entries'</span>,</div><div class="line">		<span class="string">'submit'</span>                 =&gt; <span class="string">'提交'</span>,</div><div class="line">		<span class="string">'successfully_added_new'</span> =&gt; <span class="string">'添加完成'</span>,</div><div class="line">		<span class="string">'successfully_deleted'</span>   =&gt; <span class="string">'删除完成'</span>,</div><div class="line">		<span class="string">'successfully_updated'</span>   =&gt; <span class="string">'更新完成'</span>,</div><div class="line">		<span class="string">'timestamp'</span>              =&gt; <span class="string">'时间戳'</span>,</div><div class="line">		<span class="string">'title'</span>                  =&gt; <span class="string">'标题'</span>,</div><div class="line">		<span class="string">'type'</span>                   =&gt; <span class="string">'类型'</span>,</div><div class="line">		<span class="string">'unsigned'</span>               =&gt; <span class="string">'无符号'</span>,</div><div class="line">		<span class="string">'unstick_sidebar'</span>        =&gt; <span class="string">'分开菜单'</span>,</div><div class="line">		<span class="string">'update'</span>                 =&gt; <span class="string">'保存'</span>,</div><div class="line">		<span class="string">'update_failed'</span>          =&gt; <span class="string">'保存失败'</span>,</div><div class="line">		<span class="string">'upload'</span>                 =&gt; <span class="string">'上传'</span>,</div><div class="line">		<span class="string">'url'</span>                    =&gt; <span class="string">'URL'</span>,</div><div class="line">		<span class="string">'view'</span>                   =&gt; <span class="string">'预览'</span>,</div><div class="line">		<span class="string">'viewing'</span>                =&gt; <span class="string">'浏览'</span>,</div><div class="line">		<span class="string">'yes'</span>                    =&gt; <span class="string">'是'</span>,</div><div class="line">		<span class="string">'yes_please'</span>             =&gt; <span class="string">'好的'</span>,</div><div class="line">	],</div><div class="line"></div><div class="line">	<span class="string">'login'</span> =&gt; [</div><div class="line">		<span class="string">'loginin'</span>      =&gt; <span class="string">'登陆'</span>,</div><div class="line">		<span class="string">'signin_below'</span> =&gt; <span class="string">'在此登陆:'</span>,</div><div class="line">		<span class="string">'welcome'</span>      =&gt; <span class="string">'欢迎'</span>,</div><div class="line">	],</div><div class="line"></div><div class="line">	<span class="string">'profile'</span> =&gt; [</div><div class="line">		<span class="string">'avatar'</span>        =&gt; <span class="string">'头像'</span>,</div><div class="line">		<span class="string">'edit'</span>          =&gt; <span class="string">'编辑资料'</span>,</div><div class="line">		<span class="string">'edit_user'</span>     =&gt; <span class="string">'编辑用户'</span>,</div><div class="line">		<span class="string">'password'</span>      =&gt; <span class="string">'密码'</span>,</div><div class="line">		<span class="string">'password_hint'</span> =&gt; <span class="string">'留空保持原密码'</span>,</div><div class="line">		<span class="string">'role'</span>          =&gt; <span class="string">'角色'</span>,</div><div class="line">		<span class="string">'user_role'</span>     =&gt; <span class="string">'用户角色'</span>,</div><div class="line">	],</div><div class="line"></div><div class="line">	<span class="string">'settings'</span> =&gt; [</div><div class="line">		<span class="string">'usage_help'</span>           =&gt; <span class="string">'通过调用，您可以在任何地方获得每个设置的值'</span>,</div><div class="line">		<span class="string">'save'</span>                 =&gt; <span class="string">'保存设置'</span>,</div><div class="line">		<span class="string">'new'</span>                  =&gt; <span class="string">'创建新设置项'</span>,</div><div class="line">		<span class="string">'help_name'</span>            =&gt; <span class="string">'设置名称 例: Admin Title'</span>,</div><div class="line">		<span class="string">'help_key'</span>             =&gt; <span class="string">'设置键值 例: admin_title'</span>,</div><div class="line">		<span class="string">'help_option'</span>          =&gt; <span class="string">'(可选, 只适用于某些类型，如下拉框或单选按钮)'</span>,</div><div class="line">		<span class="string">'add_new'</span>              =&gt; <span class="string">'添加新设置'</span>,</div><div class="line">		<span class="string">'delete_question'</span>      =&gt; <span class="string">'确定删除 :setting ?'</span>,</div><div class="line">		<span class="string">'delete_confirm'</span>       =&gt; <span class="string">'确定删除'</span>,</div><div class="line">		<span class="string">'successfully_created'</span> =&gt; <span class="string">'创建完成'</span>,</div><div class="line">		<span class="string">'successfully_saved'</span>   =&gt; <span class="string">'保存完成'</span>,</div><div class="line">		<span class="string">'successfully_deleted'</span> =&gt; <span class="string">'删除完成'</span>,</div><div class="line">		<span class="string">'already_at_top'</span>       =&gt; <span class="string">'这已经在最顶部了'</span>,</div><div class="line">		<span class="string">'already_at_bottom'</span>    =&gt; <span class="string">'这已经在最底部了'</span>,</div><div class="line">		<span class="string">'moved_order_up'</span>       =&gt; <span class="string">'向上移动 :name'</span>,</div><div class="line">		<span class="string">'moved_order_down'</span>     =&gt; <span class="string">'向下移动 :name'</span>,</div><div class="line">		<span class="string">'successfully_removed'</span> =&gt; <span class="string">'移除 :name 值完成'</span>,</div><div class="line">	],</div><div class="line"></div><div class="line">	<span class="string">'media'</span> =&gt; [</div><div class="line">		<span class="string">'add_new_folder'</span>         =&gt; <span class="string">'添加文件夹'</span>,</div><div class="line">		<span class="string">'audio_support'</span>          =&gt; <span class="string">'您的浏览器不支持 audio 元素.'</span>,</div><div class="line">		<span class="string">'create_new_folder'</span>      =&gt; <span class="string">'创建文件夹'</span>,</div><div class="line">		<span class="string">'delete_folder_question'</span> =&gt; <span class="string">'删除文件夹将同时删除其中的文件和文件夹'</span>,</div><div class="line">		<span class="string">'destination_folder'</span>     =&gt; <span class="string">'目标文件夹'</span>,</div><div class="line">		<span class="string">'drag_drop_info'</span>         =&gt; <span class="string">'拖拽文件到这里或点击上传按钮'</span>,</div><div class="line">		<span class="string">'error_already_exists'</span>   =&gt; <span class="string">'文件已存在.'</span>,</div><div class="line">		<span class="string">'error_creating_dir'</span>     =&gt; <span class="string">'创建文件夹失败, '</span>.</div><div class="line">		                            <span class="string">'请确认权限'</span>,</div><div class="line">		<span class="string">'error_deleting_file'</span>    =&gt; <span class="string">'删除文件失败 '</span>.</div><div class="line">		                            <span class="string">'请确认权限'</span>,</div><div class="line">		<span class="string">'error_deleting_folder'</span>  =&gt; <span class="string">'删除文件夹失败 '</span>.</div><div class="line">		                            <span class="string">'请确认权限'</span>,</div><div class="line">		<span class="string">'error_may_exist'</span>        =&gt; <span class="string">'文件名已存在'</span>.</div><div class="line">		                            <span class="string">'请先删除.'</span>,</div><div class="line">		<span class="string">'error_moving'</span>           =&gt; <span class="string">'文件移动失败 '</span>.</div><div class="line">		                            <span class="string">'请确认权限.'</span>,</div><div class="line">		<span class="string">'error_uploading'</span>        =&gt; <span class="string">'上传失败: 未知错误!'</span>,</div><div class="line">		<span class="string">'folder_exists_already'</span>  =&gt; <span class="string">'文件夹已存在 '</span>.</div><div class="line">		                            <span class="string">'您可以将原来的文件夹删除'</span>,</div><div class="line">		<span class="string">'image_does_not_exist'</span>   =&gt; <span class="string">'图片不存在'</span>,</div><div class="line">		<span class="string">'image_removed'</span>          =&gt; <span class="string">'图片移动完成'</span>,</div><div class="line">		<span class="string">'library'</span>                =&gt; <span class="string">'媒体库'</span>,</div><div class="line">		<span class="string">'loading'</span>                =&gt; <span class="string">'加载中...'</span>,</div><div class="line">		<span class="string">'move_file_folder'</span>       =&gt; <span class="string">'移动 文件/文件夹'</span>,</div><div class="line">		<span class="string">'new_file_folder'</span>        =&gt; <span class="string">'新建 文件/文件夹'</span>,</div><div class="line">		<span class="string">'new_folder_name'</span>        =&gt; <span class="string">'新文件夹名称'</span>,</div><div class="line">		<span class="string">'no_files_here'</span>          =&gt; <span class="string">'无文件.'</span>,</div><div class="line">		<span class="string">'no_files_in_folder'</span>     =&gt; <span class="string">'该文件夹无文件.'</span>,</div><div class="line">		<span class="string">'nothing_selected'</span>       =&gt; <span class="string">'未选择文件或文件夹'</span>,</div><div class="line">		<span class="string">'rename_file_folder'</span>     =&gt; <span class="string">'重命名'</span>,</div><div class="line">		<span class="string">'success_uploaded_file'</span>  =&gt; <span class="string">'文件上传完成!'</span>,</div><div class="line">		<span class="string">'success_uploading'</span>      =&gt; <span class="string">'图片上传完成!'</span>,</div><div class="line">		<span class="string">'uploading_wrong_type'</span>   =&gt; <span class="string">'上传失败: 格式不支持或文件体积过大!'</span>,</div><div class="line">		<span class="string">'video_support'</span>          =&gt; <span class="string">'您的浏览器不支持 video 标签.'</span>,</div><div class="line">	],</div><div class="line"></div><div class="line">	<span class="string">'menu_builder'</span> =&gt; [</div><div class="line">		<span class="string">'color'</span>                =&gt; <span class="string">'RGB 或 hex (可选)'</span>,</div><div class="line">		<span class="string">'color_ph'</span>             =&gt; <span class="string">'颜色 (ex. #ffffff or rgb(255, 255, 255)'</span>,</div><div class="line">		<span class="string">'create_new_item'</span>      =&gt; <span class="string">'创建新的菜单项'</span>,</div><div class="line">		<span class="string">'delete_item_confirm'</span>  =&gt; <span class="string">'确认删除该菜单项'</span>,</div><div class="line">		<span class="string">'delete_item_question'</span> =&gt; <span class="string">'确认删除?'</span>,</div><div class="line">		<span class="string">'drag_drop_info'</span>       =&gt; <span class="string">'拖拽以重新排序'</span>,</div><div class="line">		<span class="string">'dynamic_route'</span>        =&gt; <span class="string">'动态路由'</span>,</div><div class="line">		<span class="string">'edit_item'</span>            =&gt; <span class="string">'编辑菜单项'</span>,</div><div class="line">		<span class="string">'icon_class'</span>           =&gt; <span class="string">'系统提供的图标 ('</span>,</div><div class="line">		<span class="string">'icon_class2'</span>          =&gt; <span class="string">'参看此页&lt;/a&gt; )'</span>,</div><div class="line">		<span class="string">'icon_class_ph'</span>        =&gt; <span class="string">'图标类名 (可选)'</span>,</div><div class="line">		<span class="string">'item_route'</span>           =&gt; <span class="string">'菜单项的路由'</span>,</div><div class="line">		<span class="string">'item_title'</span>           =&gt; <span class="string">'菜单项标题'</span>,</div><div class="line">		<span class="string">'link_type'</span>            =&gt; <span class="string">'超链接类型'</span>,</div><div class="line">		<span class="string">'new_menu_item'</span>        =&gt; <span class="string">'新的菜单项'</span>,</div><div class="line">		<span class="string">'open_in'</span>              =&gt; <span class="string">'打开方式'</span>,</div><div class="line">		<span class="string">'open_new'</span>             =&gt; <span class="string">'新窗口打开'</span>,</div><div class="line">		<span class="string">'open_same'</span>            =&gt; <span class="string">'同窗口打开'</span>,</div><div class="line">		<span class="string">'route_parameter'</span>      =&gt; <span class="string">'路由参数 (如果存在)'</span>,</div><div class="line">		<span class="string">'static_url'</span>           =&gt; <span class="string">'静态路由'</span>,</div><div class="line">		<span class="string">'successfully_created'</span> =&gt; <span class="string">'菜单项创建完成.'</span>,</div><div class="line">		<span class="string">'successfully_deleted'</span> =&gt; <span class="string">'菜单项删除完成.'</span>,</div><div class="line">		<span class="string">'successfully_updated'</span> =&gt; <span class="string">'菜单项更新完成.'</span>,</div><div class="line">		<span class="string">'updated_order'</span>        =&gt; <span class="string">'菜单项顺序更新完成.'</span>,</div><div class="line">		<span class="string">'url'</span>                  =&gt; <span class="string">'URL'</span>,</div><div class="line">		<span class="string">'usage_hint'</span>           =&gt; <span class="string">'你可以在任意位置通过调用输出菜单'</span>,</div><div class="line">	],</div><div class="line"></div><div class="line">	<span class="string">'post'</span> =&gt; [</div><div class="line">		<span class="string">'category'</span>         =&gt; <span class="string">'文章分类'</span>,</div><div class="line">		<span class="string">'content'</span>          =&gt; <span class="string">'文章内容'</span>,</div><div class="line">		<span class="string">'details'</span>          =&gt; <span class="string">'文章详细'</span>,</div><div class="line">		<span class="string">'excerpt'</span>          =&gt; <span class="string">'简介 &lt;small&gt;简单描述&lt;/small&gt;'</span>,</div><div class="line">		<span class="string">'image'</span>            =&gt; <span class="string">'文章图片'</span>,</div><div class="line">		<span class="string">'meta_description'</span> =&gt; <span class="string">'标签描述'</span>,</div><div class="line">		<span class="string">'meta_keywords'</span>    =&gt; <span class="string">'标签关键字'</span>,</div><div class="line">		<span class="string">'new'</span>              =&gt; <span class="string">'新建文章'</span>,</div><div class="line">		<span class="string">'seo_content'</span>      =&gt; <span class="string">'SEO内容'</span>,</div><div class="line">		<span class="string">'seo_title'</span>        =&gt; <span class="string">'Seo辩题'</span>,</div><div class="line">		<span class="string">'slug'</span>             =&gt; <span class="string">'URL别名'</span>,</div><div class="line">		<span class="string">'status'</span>           =&gt; <span class="string">'文章状态'</span>,</div><div class="line">		<span class="string">'status_draft'</span>     =&gt; <span class="string">'草稿'</span>,</div><div class="line">		<span class="string">'status_pending'</span>   =&gt; <span class="string">'带发布'</span>,</div><div class="line">		<span class="string">'status_published'</span> =&gt; <span class="string">'已发布'</span>,</div><div class="line">		<span class="string">'title'</span>            =&gt; <span class="string">'文章标题'</span>,</div><div class="line">		<span class="string">'title_sub'</span>        =&gt; <span class="string">'副标题'</span>,</div><div class="line">		<span class="string">'update'</span>           =&gt; <span class="string">'更新'</span>,</div><div class="line">	],</div><div class="line"></div><div class="line">	<span class="string">'database'</span> =&gt; [</div><div class="line">		<span class="string">'add_bread'</span>                 =&gt; <span class="string">'为该表添加BREAD'</span>,</div><div class="line">		<span class="string">'add_new_column'</span>            =&gt; <span class="string">'添加字段'</span>,</div><div class="line">		<span class="string">'add_softdeletes'</span>           =&gt; <span class="string">'添加软删除'</span>,</div><div class="line">		<span class="string">'add_timestamps'</span>            =&gt; <span class="string">'添加时间戳'</span>,</div><div class="line">		<span class="string">'already_exists'</span>            =&gt; <span class="string">'已经存在'</span>,</div><div class="line">		<span class="string">'already_exists_table'</span>      =&gt; <span class="string">'数据表 :table 已经存在'</span>,</div><div class="line">		<span class="string">'bread_crud_actions'</span>        =&gt; <span class="string">'BREAD/CRUD 动作'</span>,</div><div class="line">		<span class="string">'bread_info'</span>                =&gt; <span class="string">'BREAD信息'</span>,</div><div class="line">		<span class="string">'column'</span>                    =&gt; <span class="string">'列'</span>,</div><div class="line">		<span class="string">'composite_warning'</span>         =&gt; <span class="string">'警告: 该列是复合索引的一部分'</span>,</div><div class="line">		<span class="string">'controller_name'</span>           =&gt; <span class="string">'控制器名称'</span>,</div><div class="line">		<span class="string">'controller_name_hint'</span>      =&gt; <span class="string">'例. PageController, 如果为空则使用 BREAD 控制器'</span>,</div><div class="line">		<span class="string">'create_bread_for_table'</span>    =&gt; <span class="string">'为 :table 创建 BREAD'</span>,</div><div class="line">		<span class="string">'create_migration'</span>          =&gt; <span class="string">'创建 migration?'</span>,</div><div class="line">		<span class="string">'create_model_table'</span>        =&gt; <span class="string">'创建 model?'</span>,</div><div class="line">		<span class="string">'create_new_table'</span>          =&gt; <span class="string">'新建表'</span>,</div><div class="line">		<span class="string">'create_your_new_table'</span>     =&gt; <span class="string">'新建表'</span>,</div><div class="line">		<span class="string">'default'</span>                   =&gt; <span class="string">'默认'</span>,</div><div class="line">		<span class="string">'delete_bread'</span>              =&gt; <span class="string">'删除 BREAD'</span>,</div><div class="line">		<span class="string">'delete_bread_before_table'</span> =&gt; <span class="string">'删除表前请先删除该表的 BREAD 信息.'</span>,</div><div class="line">		<span class="string">'delete_table_bread_conf'</span>   =&gt; <span class="string">'删除 BREAD'</span>,</div><div class="line">		<span class="string">'delete_table_bread_quest'</span>  =&gt; <span class="string">'确认删除表 :table 的BREAD?'</span>,</div><div class="line">		<span class="string">'delete_table_confirm'</span>      =&gt; <span class="string">'删除该表'</span>,</div><div class="line">		<span class="string">'delete_table_question'</span>     =&gt; <span class="string">'确认删除 :table 表?'</span>,</div><div class="line">		<span class="string">'description'</span>               =&gt; <span class="string">'描述'</span>,</div><div class="line">		<span class="string">'display_name'</span>              =&gt; <span class="string">'显示名称'</span>,</div><div class="line">		<span class="string">'display_name_plural'</span>       =&gt; <span class="string">'显示名称 (多条)'</span>,</div><div class="line">		<span class="string">'display_name_singular'</span>     =&gt; <span class="string">'显示名称 (单条)'</span>,</div><div class="line">		<span class="string">'edit_bread'</span>                =&gt; <span class="string">'编辑 BREAD'</span>,</div><div class="line">		<span class="string">'edit_bread_for_table'</span>      =&gt; <span class="string">'编辑表:table BREAD'</span>,</div><div class="line">		<span class="string">'edit_rows'</span>                 =&gt; <span class="string">'编辑 :table 表数据'</span>,</div><div class="line">		<span class="string">'edit_table'</span>                =&gt; <span class="string">'编辑 :table 表结构'</span>,</div><div class="line">		<span class="string">'edit_table_not_exist'</span>      =&gt; <span class="string">'所编辑的表不存在'</span>,</div><div class="line">		<span class="string">'error_creating_bread'</span>      =&gt; <span class="string">'创建BREAD时出现错误'</span>,</div><div class="line">		<span class="string">'error_removing_bread'</span>      =&gt; <span class="string">'删除BREAD时出现错误'</span>,</div><div class="line">		<span class="string">'error_updating_bread'</span>      =&gt; <span class="string">'更新BREAD时出现错误'</span>,</div><div class="line">		<span class="string">'extra'</span>                     =&gt; <span class="string">'拓展'</span>,</div><div class="line">		<span class="string">'field'</span>                     =&gt; <span class="string">'字段'</span>,</div><div class="line">		<span class="string">'field_safe_failed'</span>         =&gt; <span class="string">'保存字段 :field 失败，操作撤销'</span>,</div><div class="line">		<span class="string">'generate_permissions'</span>      =&gt; <span class="string">'生成权限管理'</span>,</div><div class="line">		<span class="string">'icon_class'</span>                =&gt; <span class="string">'数据表图标'</span>,</div><div class="line">		<span class="string">'icon_hint'</span>                 =&gt; <span class="string">'图标 (可选) 使用'</span>,</div><div class="line">		<span class="string">'icon_hint2'</span>                =&gt; <span class="string">'系统图标'</span>,</div><div class="line">		<span class="string">'index'</span>                     =&gt; <span class="string">'索引'</span>,</div><div class="line">		<span class="string">'input_type'</span>                =&gt; <span class="string">'输入类型'</span>,</div><div class="line">		<span class="string">'key'</span>                       =&gt; <span class="string">'Key'</span>,</div><div class="line">		<span class="string">'model_class'</span>               =&gt; <span class="string">'模型类名'</span>,</div><div class="line">		<span class="string">'model_name'</span>                =&gt; <span class="string">'模型名称'</span>,</div><div class="line">		<span class="string">'model_name_ph'</span>             =&gt; <span class="string">'例. \App\User, 如果为空则尝试使用表名'</span>,</div><div class="line">		<span class="string">'name_warning'</span>              =&gt; <span class="string">'请在添加索引之前给列命名'</span>,</div><div class="line">		<span class="string">'no_composites_warning'</span>     =&gt; <span class="string">'此表存在目前不受支持到复合索引。请注他们目前不受支持。在尝试添加/删除索引时要小心'</span>,</div><div class="line">		<span class="string">'null'</span>                     =&gt; <span class="string">'Null'</span>,</div><div class="line">		<span class="string">'optional_details'</span>         =&gt; <span class="string">'选项详细'</span>,</div><div class="line">		<span class="string">'primary'</span>                  =&gt; <span class="string">'主键'</span>,</div><div class="line">		<span class="string">'server_pagination'</span>        =&gt; <span class="string">'服务端分页'</span>,</div><div class="line">		<span class="string">'success_create_table'</span>     =&gt; <span class="string">'表 :table 创建完成'</span>,</div><div class="line">		<span class="string">'success_created_bread'</span>    =&gt; <span class="string">'BREAD创建完成'</span>,</div><div class="line">		<span class="string">'success_delete_table'</span>     =&gt; <span class="string">'表 :table 删除完成'</span>,</div><div class="line">		<span class="string">'success_remove_bread'</span>     =&gt; <span class="string">'删除:datatype的BREAD完成'</span>,</div><div class="line">		<span class="string">'success_update_bread'</span>     =&gt; <span class="string">'更新:datatype的BREAD完成'</span>,</div><div class="line">		<span class="string">'success_update_table'</span>     =&gt; <span class="string">'表 :table 更新完成'</span>,</div><div class="line">		<span class="string">'table_actions'</span>            =&gt; <span class="string">'表操作'</span>,</div><div class="line">		<span class="string">'table_columns'</span>            =&gt; <span class="string">'表行数据'</span>,</div><div class="line">		<span class="string">'table_has_index'</span>          =&gt; <span class="string">'该表已经存在主索引.'</span>,</div><div class="line">		<span class="string">'table_name'</span>               =&gt; <span class="string">'表名'</span>,</div><div class="line">		<span class="string">'table_no_columns'</span>         =&gt; <span class="string">'该表没有列名'</span>,</div><div class="line">		<span class="string">'type'</span>                     =&gt; <span class="string">'数据类型'</span>,</div><div class="line">		<span class="string">'type_not_supported'</span>       =&gt; <span class="string">'不支持该类型'</span>,</div><div class="line">		<span class="string">'unique'</span>                   =&gt; <span class="string">'唯一'</span>,</div><div class="line">		<span class="string">'unknown_type'</span>             =&gt; <span class="string">'未知的类型'</span>,</div><div class="line">		<span class="string">'update_table'</span>             =&gt; <span class="string">'更新表'</span>,</div><div class="line">		<span class="string">'url_slug'</span>                 =&gt; <span class="string">'URL别名 (必须唯一)'</span>,</div><div class="line">		<span class="string">'url_slug_ph'</span>              =&gt; <span class="string">'URL别名 (例. posts)'</span>,</div><div class="line">		<span class="string">'visibility'</span>               =&gt; <span class="string">'可见'</span>,</div><div class="line">	],</div><div class="line"></div><div class="line">	<span class="string">'dimmer'</span> =&gt; [</div><div class="line">		<span class="string">'page'</span>           =&gt; <span class="string">'页面'</span>,</div><div class="line">		<span class="string">'page_link_text'</span> =&gt; <span class="string">'浏览全部页面'</span>,</div><div class="line">		<span class="string">'page_text'</span>      =&gt; <span class="string">'共 :count :string 数据. 点击下面按钮浏览全部.'</span>,</div><div class="line">		<span class="string">'post'</span>           =&gt; <span class="string">'文章'</span>,</div><div class="line">		<span class="string">'post_link_text'</span> =&gt; <span class="string">'浏览全部页面'</span>,</div><div class="line">		<span class="string">'post_text'</span>      =&gt; <span class="string">'共 :count :string 数据. 点击下面按钮浏览全部.'</span>,</div><div class="line">		<span class="string">'user'</span>           =&gt; <span class="string">'用户'</span>,</div><div class="line">		<span class="string">'user_link_text'</span> =&gt; <span class="string">'浏览全部用户'</span>,</div><div class="line">		<span class="string">'user_text'</span>      =&gt; <span class="string">'共 :count :string 数据. 点击下面按钮浏览全部.'</span>,</div><div class="line">	],</div><div class="line"></div><div class="line">	<span class="string">'form'</span> =&gt; [</div><div class="line">		<span class="string">'field_password_keep'</span>          =&gt; <span class="string">'填空保持不变'</span>,</div><div class="line">		<span class="string">'field_select_dd_relationship'</span> =&gt; <span class="string">'确保在类:class中建立了正确的方法:method method of '</span>,</div><div class="line">		<span class="string">'type_checkbox'</span>                =&gt; <span class="string">'复选框（Check Box）'</span>,</div><div class="line">		<span class="string">'type_codeeditor'</span>              =&gt; <span class="string">'代码编辑器（Code Editor）'</span>,</div><div class="line">		<span class="string">'type_file'</span>                    =&gt; <span class="string">'文件（File）'</span>,</div><div class="line">		<span class="string">'type_image'</span>                   =&gt; <span class="string">'图片（Image）'</span>,</div><div class="line">		<span class="string">'type_radiobutton'</span>             =&gt; <span class="string">'单选框（Radio Button）'</span>,</div><div class="line">		<span class="string">'type_richtextbox'</span>             =&gt; <span class="string">'富文本（Rich Textbox）'</span>,</div><div class="line">		<span class="string">'type_selectdropdown'</span>          =&gt; <span class="string">'下拉选择（Select Dropdown）'</span>,</div><div class="line">		<span class="string">'type_textarea'</span>                =&gt; <span class="string">'文本域（Text Area）'</span>,</div><div class="line">		<span class="string">'type_textbox'</span>                 =&gt; <span class="string">'文本框（Text Box）'</span>,</div><div class="line">	],</div><div class="line"></div><div class="line"></div><div class="line">	<span class="comment">// DataTable translations from: https://github.com/DataTables/Plugins/tree/master/i18n</span></div><div class="line">	<span class="string">'datatable'</span> =&gt; [</div><div class="line">		<span class="string">'sEmptyTable'</span>     =&gt; <span class="string">'表中数据为空'</span>,</div><div class="line">		<span class="string">'sInfo'</span>           =&gt; <span class="string">'显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项'</span>,</div><div class="line">		<span class="string">'sInfoEmpty'</span>      =&gt; <span class="string">'显示第 0 至 0 项结果，共 0 项'</span>,</div><div class="line">		<span class="string">'sInfoFiltered'</span>   =&gt; <span class="string">'(由 _MAX_ 项结果过滤)'</span>,</div><div class="line">		<span class="string">'sInfoPostFix'</span>    =&gt; <span class="string">''</span>,</div><div class="line">		<span class="string">'sInfoThousands'</span>  =&gt; <span class="string">','</span>,</div><div class="line">		<span class="string">'sLengthMenu'</span>     =&gt; <span class="string">'显示 _MENU_ 项结果'</span>,</div><div class="line">		<span class="string">'sLoadingRecords'</span> =&gt; <span class="string">'载入中...'</span>,</div><div class="line">		<span class="string">'sProcessing'</span>     =&gt; <span class="string">'处理中...'</span>,</div><div class="line">		<span class="string">'sSearch'</span>         =&gt; <span class="string">'搜索:'</span>,</div><div class="line">		<span class="string">'sZeroRecords'</span>    =&gt; <span class="string">'没有匹配结果'</span>,</div><div class="line">		<span class="string">'oPaginate'</span>       =&gt; [</div><div class="line">			<span class="string">'sFirst'</span>    =&gt; <span class="string">'首页'</span>,</div><div class="line">			<span class="string">'sLast'</span>     =&gt; <span class="string">'上页'</span>,</div><div class="line">			<span class="string">'sNext'</span>     =&gt; <span class="string">'下页'</span>,</div><div class="line">			<span class="string">'sPrevious'</span> =&gt; <span class="string">'末页'</span>,</div><div class="line">		],</div><div class="line">		<span class="string">'oAria'</span> =&gt; [</div><div class="line">			<span class="string">'sSortAscending'</span>  =&gt; <span class="string">': 以升序排列此列'</span>,</div><div class="line">			<span class="string">'sSortDescending'</span> =&gt; <span class="string">': 以降序排列此列'</span>,</div><div class="line">		],</div><div class="line">	],</div><div class="line"></div><div class="line">	<span class="string">'theme'</span> =&gt; [</div><div class="line">		<span class="string">'footer_copyright'</span>  =&gt; <span class="string">'Made with &lt;i class="voyager-heart"&gt;&lt;/i&gt; by'</span>,</div><div class="line">		<span class="string">'footer_copyright2'</span> =&gt; <span class="string">'Made with rum and even more rum'</span>,</div><div class="line">	],</div><div class="line"></div><div class="line">	<span class="string">'json'</span> =&gt; [</div><div class="line">		<span class="string">'invalid'</span>           =&gt; <span class="string">'无效的JSON'</span>,</div><div class="line">		<span class="string">'invalid_message'</span>   =&gt; <span class="string">'引入了一些无效的JSON'</span>,</div><div class="line">		<span class="string">'valid'</span>             =&gt; <span class="string">'有效的JSON'</span>,</div><div class="line">		<span class="string">'validation_errors'</span> =&gt; <span class="string">'验证错误'</span>,</div><div class="line">	],</div><div class="line"></div><div class="line">	<span class="string">'analytics'</span> =&gt; [</div><div class="line">		<span class="string">'by_pageview'</span>             =&gt; <span class="string">'By pageview'</span>,</div><div class="line">		<span class="string">'by_sessions'</span>             =&gt; <span class="string">'By sessions'</span>,</div><div class="line">		<span class="string">'by_users'</span>                =&gt; <span class="string">'By users'</span>,</div><div class="line">		<span class="string">'no_client_id'</span>            =&gt; <span class="string">'To view analytics you\'ll need to get a google analytics client id and '</span>.</div><div class="line">		                             <span class="string">'add it to your settings for the key &lt;code&gt;google_analytics_client_id'</span>.</div><div class="line">		                             <span class="string">'&lt;/code&gt;. Get your key in your Google developer console:'</span>,</div><div class="line">		<span class="string">'set_view'</span>                =&gt; <span class="string">'Select a View'</span>,</div><div class="line">		<span class="string">'this_vs_last_week'</span>       =&gt; <span class="string">'This Week vs Last Week'</span>,</div><div class="line">		<span class="string">'this_vs_last_year'</span>       =&gt; <span class="string">'This Year vs Last Year'</span>,</div><div class="line">		<span class="string">'top_browsers'</span>            =&gt; <span class="string">'Top Browsers'</span>,</div><div class="line">		<span class="string">'top_countries'</span>           =&gt; <span class="string">'Top Countries'</span>,</div><div class="line">		<span class="string">'various_visualizations'</span>  =&gt; <span class="string">'Various visualizations'</span>,</div><div class="line">	],</div><div class="line"></div><div class="line">	<span class="string">'error'</span> =&gt; [</div><div class="line">		<span class="string">'symlink_created_text'</span>   =&gt; <span class="string">'We just created the missing symlink for you.'</span>,</div><div class="line">		<span class="string">'symlink_created_title'</span>  =&gt; <span class="string">'Missing storage symlink created'</span>,</div><div class="line">		<span class="string">'symlink_failed_text'</span>    =&gt; <span class="string">'We failed to generate the missing symlink for your application. '</span>.</div><div class="line">		                            <span class="string">'It seems like your hosting provider does not support it.'</span>,</div><div class="line">		<span class="string">'symlink_failed_title'</span>   =&gt; <span class="string">'Could not create missing storage symlink'</span>,</div><div class="line">		<span class="string">'symlink_missing_button'</span> =&gt; <span class="string">'Fix it'</span>,</div><div class="line">		<span class="string">'symlink_missing_text'</span>   =&gt; <span class="string">'We could not find a storage symlink. This could cause problems with '</span>.</div><div class="line">		                            <span class="string">'loading media files from the browser.'</span>,</div><div class="line">		<span class="string">'symlink_missing_title'</span>  =&gt; <span class="string">'Missing storage symlink'</span>,</div><div class="line">	],</div><div class="line">];</div></pre></td></tr></table></figure>
+<h1 id="P-S"><a href="#P-S" class="headerlink" title="P.S."></a>P.S.</h1><p>另外本博客的访问量我想大概无限接近于0，主要是用来打发时间，做做记录，要是能帮助到别人当然也是非常的好，如果真的你在看的话，也算是个缘分吧😂，感谢浏览。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/PHP/" rel="tag"># PHP</a>
+          
+            <a href="/tags/Laravel/" rel="tag"># Laravel</a>
+          
+            <a href="/tags/Voyager/" rel="tag"># Voyager</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/30/creating-a-login-hook/" rel="next" title="macOS创建登陆运行脚本">
+                <i class="fa fa-chevron-left"></i> macOS创建登陆运行脚本
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="zxf" />
+          <p class="site-author-name" itemprop="name">zxf</p>
+           
+              <p class="site-description motion-element" itemprop="description">talk nonsense</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Voyager简介"><span class="nav-number">1.</span> <span class="nav-text">Voyager简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#github"><span class="nav-number">1.1.</span> <span class="nav-text">github</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Voyager安装"><span class="nav-number">2.</span> <span class="nav-text">Voyager安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建laravel-project"><span class="nav-number">2.1.</span> <span class="nav-text">创建laravel project</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用Composer引入voyager"><span class="nav-number">2.2.</span> <span class="nav-text">用Composer引入voyager</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置数据库"><span class="nav-number">2.3.</span> <span class="nav-text">配置数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加provider"><span class="nav-number">2.4.</span> <span class="nav-text">添加provider</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#install-voyager"><span class="nav-number">2.5.</span> <span class="nav-text">install voyager</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#低版本mysql注意"><span class="nav-number">2.6.</span> <span class="nav-text">低版本mysql注意</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#系统翻译"><span class="nav-number">3.</span> <span class="nav-text">系统翻译</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建语言文件"><span class="nav-number">3.1.</span> <span class="nav-text">创建语言文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置系统locate"><span class="nav-number">3.2.</span> <span class="nav-text">配置系统locate</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#我的翻译（zh-cn-voyager-php）"><span class="nav-number">3.3.</span> <span class="nav-text">我的翻译（zh-cn/voyager.php）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#P-S"><span class="nav-number">4.</span> <span class="nav-text">P.S.</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zxf</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+<script type="text/javascript" src="/js/src/custom.js"></script>
+<link rel="stylesheet" href="/css/src/custom.css">
+</html>
